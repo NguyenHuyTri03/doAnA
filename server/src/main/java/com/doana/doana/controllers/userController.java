@@ -1,17 +1,23 @@
 package com.doana.doana.controllers;
 
+import com.doana.doana.Repositories.UserRepository;
 import com.doana.doana.models.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin
 public class userController {
+    private final UserRepository userRepository;
 
-//    static User user = new User();
+    public userController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @GetMapping("/ping")
     public String Ping() {
@@ -20,27 +26,44 @@ public class userController {
 
     @PostMapping("/user/create")
     public ResponseEntity CreateUser(@RequestBody User newUser) {
-//        user.setName(newUser.getName());
-//        user.setPassword(newUser.getPassword());
-//        user.setEmail(newUser.getEmail());
-//        user.setAddress(newUser.getAddress());
-//        user.setPhone(newUser.getPhone());
-//        user.setRole(newUser.getRole());
-        return ResponseEntity.ok(HttpStatus.CREATED);
+        try {
+            User user = new User();
+            user.setName(newUser.getName());
+            user.setPassword(newUser.getPassword());
+            user.setEmail(newUser.getEmail());
+            user.setAddress(newUser.getAddress());
+            user.setPhone(newUser.getPhone());
+            user.setRole(newUser.getRole());
+
+            userRepository.save(user);
+            System.out.println(user.getId().toString());
+            return ResponseEntity.ok(HttpStatus.CREATED);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
     @GetMapping("/user/get")
-    public ResponseEntity GetUser() {
-        // Logic to get user
-
-        return ResponseEntity.ok(HttpStatus.OK);
+    public ResponseEntity GetUser(@RequestBody Long id) {
+        try {
+            Optional<User> user = userRepository.findById(id);
+            return ResponseEntity.status(HttpStatus.FOUND).body(user);
+        }catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
     @PutMapping("user/update")
     public ResponseEntity UpdateUser() {
         // Logic to update user
+        try {
 
-        return ResponseEntity.ok(HttpStatus.ACCEPTED);
+
+            return ResponseEntity.ok(HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+
     }
 
     @DeleteMapping("user/delete")
