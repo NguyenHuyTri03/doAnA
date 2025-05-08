@@ -7,6 +7,7 @@ import ProductDetails from './customer/components/ProductDetails/ProductDetails.
 import Cart from './customer/components/Cart/Cart.jsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Checkout from './customer/components/Checkout/Checkout.jsx';
+import AllProduct from './customer/components/product/AllProduct.jsx';
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
         <Navigation />
         <div>
           <Routes>
-            <Route path="/" element={<HomePage />} />
+             <Route path="/" element={<HomePage />} />
+            <Route path="/san-pham" element={<AllProduct />} />
             <Route path="/products" element={<Product />} />
             <Route path="/product/:productId" element={<ProductDetails />} />
             <Route path="/cart" element={<Cart/>} />

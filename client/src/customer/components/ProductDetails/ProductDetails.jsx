@@ -8,7 +8,7 @@ import { test as productData } from '../../../Data/test.js'
 import { useParams } from 'react-router-dom'
 import ProductReviewCard from './ProductReviewCard.jsx'
 import LinearProgress from '@mui/material/LinearProgress';
-import HomeSectionCard from '../HomeSectionCard/HomeSectionCard.jsx'
+import HomeSectionCard from '../ProductSectionCard/ProductSectionCard.jsx'
 import test from '../../../Data/test.js'
 import { Link } from 'react-router-dom'
 
@@ -53,7 +53,7 @@ export default function ProductDetails() {
         : []
 
     const mappedImages = product.imageUrl
-        ? Array(4).fill({ src: product.imageUrl, alt: `Image of ${product.title}` })
+        ? Array(4).fill({ src: product.imageUrl, alt: `Image of ${product.name}` })
         : []
 
     const breadcrumbs = [
@@ -77,7 +77,7 @@ export default function ProductDetails() {
                             )}
                         </li>
                     ))}
-                    <li className="text-gray-500 font-medium">{product.title}</li>
+                    <li className="text-gray-500 font-medium">{product.name}</li>
                 </ol>
             </nav>
 
@@ -108,17 +108,22 @@ export default function ProductDetails() {
 
                 <div className="flex flex-col justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold text-gray-900">{product.title}</h1>
-                        <p className="text-sm text-gray-500 mb-4">{product.brand}</p>
+                        <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
+                        <p className="text-sm text-gray-500 mb-4">{product.category}</p>
 
-                        <div className="flex items-center mb-4">
-                            <p className="text-2xl font-semibold text-gray-900">{product.discountedPrice}đ</p>
-                            {product.price > product.discountedPrice && (
-                                <span className="ml-4 line-through text-gray-500">{product.price}đ</span>
-                            )}
+                        <div className="mb-4">
                             {product.discountPercent > 0 && (
-                                <span className="ml-4 text-green-600 font-medium">{product.discountPercent}% Off</span>
+                                <div className="flex items-center mb-1 space-x-4">
+                                    <span className="line-through text-gray-500">{product.price.toLocaleString()}đ</span>
+                                    <span className="text-green-600 font-medium">{product.discountPercent}% Off</span>
+                                </div>
                             )}
+
+                            <p className="text-2xl font-semibold text-gray-900">
+                                {product.discountPercent > 0
+                                    ? `${(product.price * (1 - product.discountPercent / 100)).toLocaleString()}đ`
+                                    : `${product.price.toLocaleString()}đ`}
+                            </p>
                         </div>
 
                         <div className="flex items-center mb-6">
@@ -141,10 +146,6 @@ export default function ProductDetails() {
                             <div>
                                 <h3 className="text-sm font-semibold text-gray-900">Description</h3>
                                 <p className="text-sm text-gray-700">{product.description}</p>
-                            </div>
-                            <div>
-                                <h3 className="text-sm font-semibold text-gray-900">Color</h3>
-                                <p className="text-sm text-gray-700">{product.color}</p>
                             </div>
                         </div>
 

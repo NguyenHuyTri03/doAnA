@@ -2,28 +2,22 @@ export const test = [
   {
     id: 1,
     imageUrl: "https://images.unsplash.com/photo-1511920170033-f8396924c348",
-    brand: "Arabica House",
-    title: "100% Pure Arabica Beans",
-    color: "Brown",
+    name: "Arabica House",
     category: "ca-phe-hat",
-    discountedPrice: 299,
     price: 499,
     discountPercent: 59,
+    description: "Hạt cà phê Arabica nguyên chất 100% được tuyển chọn kỹ lưỡng từ các vùng trồng cà phê cao cấp. Hương thơm tinh tế, vị chua thanh đặc trưng và hậu vị ngọt kéo dài, mang đến trải nghiệm cà phê đầy cảm xúc.",
     size: [
       { name: "250g", quantity: 50 },
       { name: "500g", quantity: 30 },
       { name: "1kg", quantity: 0 },
     ],
-    description: "Hạt cà phê Arabica nguyên chất 100% được tuyển chọn kỹ lưỡng từ các vùng trồng cà phê cao cấp. Hương thơm tinh tế, vị chua thanh đặc trưng và hậu vị ngọt kéo dài, mang đến trải nghiệm cà phê đầy cảm xúc.",
   },
   {
     id: 2,
     imageUrl: "https://images.unsplash.com/photo-1509042239860-f550ce710b93",
-    brand: "Robusta King",
-    title: "Premium Robusta Coffee",
-    color: "Dark Brown",
+    name: "Robusta King",
     category: "ca-phe-hat",
-    discountedPrice: 249,
     price: 399,
     discountPercent: 52,
     size: [
@@ -36,11 +30,8 @@ export const test = [
   {
     id: 3,
     imageUrl: "https://plus.unsplash.com/premium_photo-1676627277042-7e59b77a89ca?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    brand: "Espresso Lovers",
-    title: "Espresso Blend - Rich & Intense",
-    color: "Dark Roast",
+    name: "Espresso Lovers",
     category: "ca-phe-hat",
-    discountedPrice: 349,
     price: 549,
     discountPercent: 37,
     size: [
@@ -53,11 +44,8 @@ export const test = [
   {
     id: 4,
     imageUrl: "https://images.unsplash.com/photo-1517256613344-3b33a773745c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    brand: "Colombia Coffee",
-    title: "Light Roast for Filter Coffee",
-    color: "Light Roast",
+    name: "Colombia Coffee",
     category: "ca-phe-hat",
-    discountedPrice: 319,
     price: 459,
     discountPercent: 30,
     size: [
@@ -69,12 +57,9 @@ export const test = [
   },
   {
     id: 5,
-    imageUrl: "https://images.unsplash.com/photo-1510525167039-e330266d2648?q=80&w=1887&auto=format&fit=fit&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Updated URL
-    brand: "Blend Brew",
-    title: "Ethiopian Yirgacheffe Single Origin",
-    color: "Medium Roast",
+    imageUrl: "https://images.unsplash.com/photo-1510525167039-e330266d2648?q=80&w=1887&auto=format&fit=fit&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    name: "Blend Brew",
     category: "ca-phe-hat",
-    discountedPrice: 399,
     price: 699,
     discountPercent: 43,
     size: [
@@ -87,11 +72,8 @@ export const test = [
   {
     id: 6,
     imageUrl: "https://images.unsplash.com/photo-1567306226416-28f0efdc88ce",
-    brand: "Vietnam Legend",
-    title: "Traditional Vietnamese Coffee",
-    color: "Dark Roast",
+    name: "Vietnam Legend",
     category: "ca-phe-hoa-tan",
-    discountedPrice: 279,
     price: 499,
     discountPercent: 44,
     size: [
@@ -104,11 +86,8 @@ export const test = [
   {
     id: 7,
     imageUrl: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085",
-    brand: "Cold Brew Co.",
-    title: "Cold Brew Special Beans",
-    color: "Medium Dark",
+    name: "Cold Brew Co.",
     category: "ca-phe-hat",
-    discountedPrice: 329,
     price: 489,
     discountPercent: 33,
     size: [
@@ -118,15 +97,11 @@ export const test = [
     ],
     description: "Hạt cà phê được tuyển chọn và rang đặc biệt cho phương pháp pha Cold Brew. Mang lại hương vị mượt mà, ít chua và hậu vị ngọt ngào.",
   },
-  // --- Thêm dữ liệu mẫu mới bắt đầu từ đây ---
   {
     id: 8,
     imageUrl: "https://images.unsplash.com/photo-1525134479668-1bee5c7c6845?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    brand: "Decaf Delights",
-    title: "Decaf Blend - Smooth & Balanced",
-    color: "Medium",
+    name: "Decaf Delights",
     category: "ca-phe-hat",
-    discountedPrice: 289,
     price: 429,
     discountPercent: 32,
     size: [
@@ -139,28 +114,22 @@ export const test = [
   {
     id: 9,
     imageUrl: "https://images.unsplash.com/photo-1551028150-64b9f39586c3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    brand: "Aeropress Enthusiast",
-    title: "Beans for Aeropress",
-    color: "Medium Light",
+    name: "Aeropress Enthusiast",
     category: "ca-phe-hat",
-    discountedPrice: 339,
     price: 509,
     discountPercent: 33,
     size: [
       { name: "250g", quantity: 40 },
       { name: "500g", quantity: 25 },
-      { name: "1kg", quantity: 0 }, // Out of stock
+      { name: "1kg", quantity: 0 },
     ],
     description: "Rang đặc biệt để tối ưu hóa hương vị khi pha bằng Aeropress. Hương vị sạch, rõ nét và hậu vị dễ chịu.",
   },
   {
     id: 10,
     imageUrl: "https://images.unsplash.com/photo-1621606782458-418b9d07d9c7?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    brand: "Sweet Coffee Co.",
-    title: "Flavored Instant Coffee - Vanilla",
-    color: "Creamy White",
+    name: "Sweet Coffee Co.",
     category: "ca-phe-hoa-tan",
-    discountedPrice: 189,
     price: 299,
     discountPercent: 37,
     size: [
@@ -171,164 +140,19 @@ export const test = [
   },
   {
     id: 11,
-    imageUrl: "https://images.unsplash.com/photo-1559496417-35c447670252?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    brand: "Coffee Gear Pro",
-    title: "French Press - 350ml",
-    color: "Silver",
-    category: "phu-kien", // New category
-    discountedPrice: 450,
-    price: 600,
-    discountPercent: 25,
-    size: [
-      { name: "350ml", quantity: 25 },
-    ],
-    description: "Bình French Press 350ml chất lượng cao, giúp bạn pha cà phê đậm đà và tròn vị ngay tại nhà.",
-  },
-   {
-    id: 12,
-    imageUrl: "https://images.unsplash.com/photo-1594555147319-767d4af0241c?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    brand: "Ceramic Cups Co.",
-    title: "Ceramic Coffee Mug Set",
-    color: "White",
-    category: "phu-kien", // New category
-    discountedPrice: 200,
-    price: 300,
-    discountPercent: 33,
-    size: [
-      { name: "Set of 2", quantity: 40 },
-      { name: "Set of 4", quantity: 20 },
-    ],
-    description: "Bộ tách cà phê gốm sứ cao cấp, thiết kế đơn giản, sang trọng, giữ nhiệt tốt. Hoàn hảo cho khoảnh khắc thưởng thức cà phê.",
-  },
-   {
-    id: 13,
-    id: 13,
-    imageUrl: "https://images.unsplash.com/photo-1558523002-f17812330c7a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    brand: "Barista Tools Ltd.",
-    title: "Coffee Grinder - Manual",
-    color: "Black",
-    category: "phu-kien", // New category
-    discountedPrice: 550,
-    price: 750,
-    discountPercent: 27,
-    size: [
-      { name: "Standard", quantity: 15 },
-    ],
-    description: "Máy xay cà phê cầm tay với lưỡi xay ceramic, điều chỉnh được độ mịn. Lý tưởng cho pha Pour-over và French Press.",
-  },
-    {
-    id: 14,
-    imageUrl: "https://images.unsplash.com/photo-1620158860401-d6583f5a755c?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    brand: "Arabica House", // Existing brand
-    title: "Arabica Peaberry",
-    color: "Light Brown",
+    imageUrl: "https://images.unsplash.com/photo-1559496417-35c447670252",
+    name: "Gourmet Blend",
     category: "ca-phe-hat",
-    discountedPrice: 380,
-    price: 580,
-    discountPercent: 34,
+    price: 699,
+    discountPercent: 15,
     size: [
-      { name: "250g", quantity: 20 },
-      { name: "500g", quantity: 10 },
-    ],
-    description: "Hạt Peaberry quý hiếm từ giống Arabica, hương vị đậm đặc và phức tạp hơn. Rang trung bình để giữ trọn hương thơm.",
-  },
-     {
-    id: 15,
-    imageUrl: "https://images.unsplash.com/photo-1552068771-ae1029c7c64c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    brand: "Robusta King", // Existing brand
-    title: "Washed Robusta",
-    color: "Brown",
-    category: "ca-phe-hat",
-    discountedPrice: 260,
-    price: 400,
-    discountPercent: 35,
-    size: [
-      { name: "250g", quantity: 35 },
-      { name: "500g", quantity: 20 },
-      { name: "1kg", quantity: 5 },
-    ],
-    description: "Robusta chế biến ướt, giảm bớt vị gắt truyền thống, mang lại hương vị sạch và cân bằng hơn. Vẫn giữ độ đậm cần thiết.",
-  },
-      {
-    id: 16,
-    imageUrl: "https://images.unsplash.com/photo-1587080413949-b10a2d0249c1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    brand: "Sweet Coffee Co.", // Existing brand
-    title: "Flavored Instant Coffee - Hazelnut",
-    color: "Light Brown",
-    category: "ca-phe-hoa-tan",
-    discountedPrice: 189,
-    price: 299,
-    discountPercent: 37,
-    size: [
-      { name: "10 sticks", quantity: 80 },
-      { name: "20 sticks", quantity: 50 },
-    ],
-    description: "Cà phê hòa tan hương Hazelnut thơm béo, dễ dàng chuẩn bị một tách cà phê hấp dẫn mọi lúc.",
-  },
-       {
-    id: 17,
-    imageUrl: "https://images.unsplash.com/photo-1557200734-c87b1155985b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    brand: "Espresso Lovers", // Existing brand
-    title: "Espresso Pods - Intensity 9",
-    color: "Dark",
-    category: "ca-phe-vien-nen", // New category
-    discountedPrice: 450,
-    price: 650,
-    discountPercent: 31,
-    size: [
-      { name: "10 pods", quantity: 50 },
-      { name: "20 pods", quantity: 30 },
-    ],
-    description: "Viên nén cà phê Espresso cường độ 9, hương vị mạnh mẽ và sâu lắng. Tương thích với các máy pha viên nén phổ biến.",
-  },
-         {
-    id: 18,
-    imageUrl: "https://images.unsplash.com/photo-1504248627951-b11bf07a177b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    brand: "Cold Brew Co.", // Existing brand
-    title: "Cold Brew Concentrate",
-    color: "Dark",
-    category: "ca-phe-uong-lien", // New category
-    discountedPrice: 120,
-    price: 180,
-    discountPercent: 33,
-    size: [
-      { name: "250ml", quantity: 60 },
-      { name: "500ml", quantity: 40 },
-    ],
-    description: "Cà phê Cold Brew pha sẵn dạng đậm đặc, chỉ cần thêm nước hoặc sữa đá là có ngay ly cà phê mát lạnh.",
-  },
-           {
-    id: 19,
-    imageUrl: "https://images.unsplash.com/photo-1576092768241-dec231529631?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    brand: "Filter Brew Co.", // Existing brand
-    title: "Paper Filters - V60",
-    color: "White",
-    category: "phu-kien", // Existing category
-    discountedPrice: 50,
-    price: 80,
-    discountPercent: 37,
-    size: [
-      { name: "100 pack", quantity: 150 },
-    ],
-    description: "Giấy lọc chuyên dụng cho phễu V60, giúp cà phê có hương vị sạch và trong trẻo. 100 tờ mỗi gói.",
-  },
-            {
-    id: 20,
-    imageUrl: "https://images.unsplash.com/photo-1590879874867-f5443a2a4311?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    brand: "Colombia Coffee", // Existing brand
-    title: "Colombia Single Origin - Washed",
-    color: "Medium Brown",
-    category: "ca-phe-hat",
-    discountedPrice: 350,
-    price: 500,
-    discountPercent: 30,
-    size: [
-      { name: "250g", quantity: 30 },
+      { name: "250g", quantity: 25 },
       { name: "500g", quantity: 15 },
-      { name: "1kg", quantity: 5 },
+      { name: "1kg", quantity: 10 },
     ],
-    description: "Cà phê Single Origin từ Colombia, chế biến ướt. Hương trái cây nhiệt đới và vị ngọt của caramel.",
+    description: "Một hỗn hợp đặc biệt với các hạt cà phê chất lượng cao, mang đến hương vị mềm mại, phong phú với chút hương caramel ngọt ngào.",
   },
-];
+]
+
 
 export default test;

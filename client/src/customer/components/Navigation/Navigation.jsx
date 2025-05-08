@@ -32,7 +32,6 @@ export default function Navigation() {
 
     return (
         <div className="relative z-50 bg-white">
-            {/* Mobile menu */}
             <Dialog open={open} onClose={setOpen} className="relative z-40 lg:hidden">
                 <DialogBackdrop className="fixed inset-0 bg-black/30 backdrop-blur-sm" />
                 <div className="fixed inset-0 z-40 flex">
@@ -47,13 +46,9 @@ export default function Navigation() {
                             </button>
                         </div>
 
-                        {/* Links */}
                         <div className="mt-4 space-y-4">
                             {navigation.categories.map((category) => (
-                                <div
-                                    key={category.name}
-                                    className="border-b border-gray-200 pb-2"
-                                >
+                                <div key={category.name} className="border-b border-gray-200 pb-2">
                                     <div className="flex items-center justify-between px-4">
                                         <h2 className="text-base font-semibold text-gray-900">{category.name}</h2>
                                         <button onClick={() => toggleCategory(category.name)} className="hover:bg-gray-100 rounded-full p-1 transition">
@@ -81,9 +76,20 @@ export default function Navigation() {
                                                     <ul className="mt-2 space-y-1 pl-4">
                                                         {section.items.map((item) => (
                                                             <li key={item.name}>
-                                                                <a href={item.href} className="block text-gray-500 hover:text-orange-400 transition">
+                                                                <a href={item.href || '#'} className="block text-gray-500 hover:text-orange-400 transition">
                                                                     {item.name}
                                                                 </a>
+                                                                {item.children && (
+                                                                    <ul className="ml-4 mt-1 space-y-1">
+                                                                        {item.children.map((child) => (
+                                                                            <li key={child.name}>
+                                                                                <a href={child.href || '#'} className="block text-gray-500 hover:text-orange-400 transition">
+                                                                                    {child.name}
+                                                                                </a>
+                                                                            </li>
+                                                                        ))}
+                                                                    </ul>
+                                                                )}
                                                             </li>
                                                         ))}
                                                     </ul>
@@ -94,7 +100,6 @@ export default function Navigation() {
                                 </div>
                             ))}
 
-                            {/* Pages */}
                             <div className="space-y-6 px-4 py-6">
                                 {navigation.pages.map((page) => (
                                     <div key={page.name} className="flow-root">
@@ -105,7 +110,6 @@ export default function Navigation() {
                                 ))}
                             </div>
 
-                            {/* Login/Register */}
                             <div className="space-y-6 border-t border-gray-200 px-4 py-6">
                                 <div className="flow-root">
                                     <a href="#" className="-m-2 block p-2 text-base font-semibold text-gray-900 hover:text-orange-400 transition">
@@ -123,88 +127,93 @@ export default function Navigation() {
                 </div>
             </Dialog>
 
-            {/* Desktop menu */}
-            <header className="relative bg-white">
+            <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
                 <p className="flex h-10 items-center justify-center bg-orange-500 px-4 text-sm font-semibold text-white tracking-wide">
                     Miễn phí giao hàng cho đơn từ 300.000đ
                 </p>
 
                 <nav aria-label="Top" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="border-b border-gray-200">
-                        <div className="flex h-16 items-center">
-                            {/* Mobile menu button */}
+                        <div className="flex h-16 items-center justify-center">
                             <button
                                 type="button"
                                 onClick={() => setOpen(true)}
-                                className="rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 transition lg:hidden"
+                                className="absolute left-4 rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 transition lg:hidden"
                             >
                                 <Bars3Icon className="size-6" />
                             </button>
 
-                            {/* Flyout menus */}
-                            <PopoverGroup className="hidden lg:ml-8 lg:block lg:self-stretch">
-                                <div className="flex h-full space-x-8">
-                                    {navigation.categories.map((category) => (
-                                        <Popover key={category.name} className="flex">
-                                            <div className="relative flex">
-                                                <PopoverButton className="relative z-10 -mb-px flex items-center border-b-2 border-transparent pt-px text-base font-semibold text-gray-700 hover:text-orange-400 data-open:border-orange-400 transition">
-                                                    {category.name}
-                                                </PopoverButton>
-                                            </div>
-
-                                            <PopoverPanel className="absolute inset-x-0 top-full text-sm text-gray-500">
-                                                <div className="relative bg-white shadow-2xl rounded-b-2xl">
-                                                    <div className="mx-auto max-w-7xl px-8 py-10 grid grid-cols-2 gap-8">
-                                                        <div className="grid grid-cols-2 gap-8">
-                                                            {category.featured.map((item) => (
-                                                                <div key={item.name}>
-                                                                    <img
-                                                                        className="w-full rounded-xl shadow-md transition-transform duration-300 hover:scale-105"
-                                                                        src={item.imageSrc}
-                                                                        alt={item.imageAlt}
-                                                                    />
-                                                                    <a href={item.href} className="mt-2 block text-base font-semibold text-gray-900 hover:text-orange-400 transition">
-                                                                        {item.name}
-                                                                    </a>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                        <div className="grid grid-cols-3 gap-8">
-                                                            {category.sections.map((section) => (
-                                                                <div key={section.name}>
-                                                                    <p className="text-base font-semibold text-gray-900">{section.name}</p>
-                                                                    <ul className="mt-4 space-y-2">
-                                                                        {section.items.map((item) => (
-                                                                            <li key={item.name}>
-                                                                                <a href={item.href} className="text-gray-500 hover:text-orange-400 transition">
-                                                                                    {item.name}
-                                                                                </a>
-                                                                            </li>
-                                                                        ))}
-                                                                    </ul>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </PopoverPanel>
-                                        </Popover>
-                                    ))}
-
+                            <PopoverGroup className="hidden lg:block">
+                                <div className="flex h-full items-center space-x-6">
                                     {navigation.pages.map((page) => (
                                         <a
                                             key={page.name}
                                             href={page.href}
-                                            className="flex items-center text-base font-semibold text-gray-700 hover:text-orange-400 transition"
+                                            className="text-base font-semibold text-gray-700 hover:text-orange-400 transition"
                                         >
                                             {page.name}
                                         </a>
                                     ))}
+
+                                    {navigation.categories.map((category) => (
+                                        <Popover key={category.name} className="relative">
+                                            {({ open }) => (
+                                                <>
+                                                    <PopoverButton className={`flex items-center gap-1 text-base font-semibold transition ${open ? 'text-orange-400' : 'text-gray-700 hover:text-orange-400'}`}>
+                                                        {category.name}
+                                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                                        </svg>
+                                                    </PopoverButton>
+                                                    <Transition
+                                                        as={Fragment}
+                                                        enter="transition ease-out duration-200"
+                                                        enterFrom="opacity-0 translate-y-1"
+                                                        enterTo="opacity-100 translate-y-0"
+                                                        leave="transition ease-in duration-150"
+                                                        leaveFrom="opacity-100 translate-y-0"
+                                                        leaveTo="opacity-0 translate-y-1"
+                                                    >
+                                                        <PopoverPanel className="absolute left-0 top-full mt-2 w-72 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 z-50">
+                                                            <div className="py-2">
+                                                                {category.sections.map((section) => (
+                                                                    <div key={section.name} className="px-4 py-2">
+                                                                        {section.items.map((item) => (
+                                                                            <div key={item.name}>
+                                                                                <a
+                                                                                    href={item.href || '#'}
+                                                                                    className="block px-2 py-1 text-gray-700 hover:text-orange-500 hover:bg-gray-100 rounded transition"
+                                                                                >
+                                                                                    {item.name}
+                                                                                </a>
+                                                                                {item.children && (
+                                                                                    <div className="ml-4 mt-1 space-y-1">
+                                                                                        {item.children.map((child) => (
+                                                                                            <a
+                                                                                                key={child.name}
+                                                                                                href={child.href || '#'}
+                                                                                                className="block px-2 py-1 text-sm text-gray-600 hover:text-orange-400 hover:bg-gray-50 rounded"
+                                                                                            >
+                                                                                                {child.name}
+                                                                                            </a>
+                                                                                        ))}
+                                                                                    </div>
+                                                                                )}
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </PopoverPanel>
+                                                    </Transition>
+                                                </>
+                                            )}
+                                        </Popover>
+                                    ))}
                                 </div>
                             </PopoverGroup>
 
-                            {/* Right side */}
-                            <div className="ml-auto flex items-center space-x-6">
+                            <div className="absolute right-4 flex items-center space-x-6">
                                 <a href="#" className="text-gray-400 hover:text-orange-400 transition">
                                     <MagnifyingGlassIcon className="size-6" />
                                 </a>

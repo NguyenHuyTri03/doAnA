@@ -7,8 +7,8 @@ import java.util.UUID;
 @Entity
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     private String name;
     private String email;
@@ -20,7 +20,7 @@ public class User {
     public User() {
     }
 
-    public User(Long id) {
+    public User(Integer id) {
         this.id = id;
     }
 
@@ -37,7 +37,7 @@ public class User {
                 '}';
     }
 
-    public User(Long id, String name, String email, String password, String role, String phone, String address) {
+    public User(Integer id, String name, String email, String password, String role, String phone, String address) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -47,11 +47,11 @@ public class User {
         this.address = address;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -38,6 +38,7 @@ const Cart = () => {
             </div>
 
             <Button
+            href='/checkout'
               variant='contained'
               className='w-full mt-5'
               sx={{ px: "2.5rem", py: ".7rem", bgcolor: "#9155fd", "&:hover": { bgcolor: "#7e3ff2" } }}

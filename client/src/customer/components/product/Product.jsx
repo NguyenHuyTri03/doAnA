@@ -6,19 +6,15 @@ import {
 } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import {
-  ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon,
+  ChevronDownIcon, MinusIcon, PlusIcon,
 } from '@heroicons/react/20/solid';
 import ProductCard from './ProductCard';
-// Ensure this path is correct and test.js contains 'discountPercent' property for products
 import test from '../../../Data/test.js';
-// Ensure this path is correct and FilterData.js contains the 'discount' filter section
-// Removed subCategories from import
 import filterData from '../product/FilterData.js';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import { Link } from 'react-router-dom'; // Import Link for navigation from react-router-dom
+import { Link } from 'react-router-dom';
 
 
-// Removed subCategories from destructuring
 const { filters } = filterData;
 
 
@@ -33,16 +29,13 @@ function classNames(...classes) {
 }
 
 
-//thêm hàm reset với hàm filter 
 
 export default function Product() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedPriceRange, setSelectedPriceRange] = useState(null);
-  // State for selected discount range
   const [selectedDiscountPercentRange, setSelectedDiscountPercentRange] = useState(null);
-   // Removed selectedCategory state
   const [filteredProducts, setFilteredProducts] = useState(test);
 
 
@@ -75,13 +68,10 @@ export default function Product() {
     setSelectedDiscountPercentRange(event.target.value);
   };
 
-  // Removed handleCategoryChange function
 
 
-  // useEffect để lọc sản phẩm khi các filter thay đổi
-  // Removed selectedCategory from dependency array
   useEffect(() => {
-    let newFilteredProducts = [...test]; // Start with all products
+    let newFilteredProducts = [...test];
 
 
     // Filter by Brand
@@ -143,11 +133,11 @@ export default function Product() {
       }
     }
 
-   
+
 
     setFilteredProducts(newFilteredProducts);
 
-  }, [selectedBrands, selectedSize, selectedPriceRange, selectedDiscountPercentRange]); // Removed selectedCategory from dependency array
+  }, [selectedBrands, selectedSize, selectedPriceRange, selectedDiscountPercentRange]);
 
 
 
@@ -180,16 +170,9 @@ export default function Product() {
                 </button>
               </div>
 
-              {/* Filters */}
+              Filters
               <form className="mt-4 border-t border-gray-200">
-                 {/* Removed Category Filter (Mobile) */}
-                {/* <Disclosure key="category" as="div" className="border-t border-gray-200 px-4 py-6">
-                  {({ open }) => (
-                    <>
-                       ... category filter JSX ...
-                    </>
-                  )}
-                </Disclosure> */}
+
 
                 {/* Use filters from filterData */}
                 {filters.map((section) => (
@@ -217,29 +200,28 @@ export default function Product() {
                                   <>
                                     <input
                                       type="radio"
-                                      id={`filter-mobile-${section.id}-${optionIdx}`} // Corrected ID
+                                      id={`filter-mobile-${section.id}-${optionIdx}`} 
                                       name="size"
                                       value={option.value}
                                       checked={selectedSize === option.value}
                                       onChange={handleSizeChange}
                                       className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                     />
-                                    <label htmlFor={`filter-mobile-${section.id}-${optionIdx}`} className="text-gray-500"> {/* Corrected htmlFor */}
-                                      {option.label}
+                                    <label htmlFor={`filter-mobile-${section.id}-${optionIdx}`} className="text-gray-500"> 
                                     </label>
                                   </>
                                 ) : section.id === 'price' ? (
                                   <>
                                     <input
                                       type="radio"
-                                      id={`filter-mobile-${section.id}-${optionIdx}`} // Corrected ID
+                                      id={`filter-mobile-${section.id}-${optionIdx}`} 
                                       name="price"
                                       value={option.value}
                                       checked={selectedPriceRange === option.value}
                                       onChange={handlePriceRangeChange}
                                       className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                     />
-                                    <label htmlFor={`filter-mobile-${section.id}-${optionIdx}`} className="text-gray-500"> {/* Corrected htmlFor */}
+                                    <label htmlFor={`filter-mobile-${section.id}-${optionIdx}`} className="text-gray-500">
                                       {option.label}
                                     </label>
                                   </>
@@ -247,41 +229,39 @@ export default function Product() {
                                   <>
                                     <input
                                       type="checkbox"
-                                      id={`filter-mobile-${section.id}-${optionIdx}`} // Corrected ID
+                                      id={`filter-mobile-${section.id}-${optionIdx}`}
                                       name="brand"
                                       value={option.value}
                                       checked={selectedBrands.includes(option.value)}
                                       onChange={handleBrandChange}
                                       className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                     />
-                                    <label htmlFor={`filter-mobile-${section.id}-${optionIdx}`} className="text-gray-500"> {/* Corrected htmlFor */}
+                                    <label htmlFor={`filter-mobile-${section.id}-${optionIdx}`} className="text-gray-500">
                                       {option.label}
                                     </label>
                                   </>
-                                ) : section.id === 'discount' ? ( // Check for 'discount' ID
+                                ) : section.id === 'discount' ? (
                                   <>
                                     <input
                                       type="radio"
-                                      id={`filter-mobile-${section.id}-${optionIdx}`} // Corrected ID
-                                      name="discountPercent" // Name matches state handler logic
+                                      id={`filter-mobile-${section.id}-${optionIdx}`}
+                                      name="discountPercent"
                                       value={option.value}
                                       checked={selectedDiscountPercentRange === option.value}
-                                      onChange={handleDiscountPercentChange} // Use correct handler
+                                      onChange={handleDiscountPercentChange}
                                       className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                     />
-                                    <label htmlFor={`filter-mobile-${section.id}-${optionIdx}`} className="text-gray-500"> {/* Corrected htmlFor */}
+                                    <label htmlFor={`filter-mobile-${section.id}-${optionIdx}`} className="text-gray-500">
                                       {option.label}
                                     </label>
                                   </>
                                 ) : (
-                                  // Fallback for other filter types if necessary
                                   <>
                                     <input
-                                      type="checkbox" // Default or adjust as needed
+                                      type="checkbox"
                                       id={`filter-mobile-${section.id}-${optionIdx}`}
                                       name={`${section.id}[]`}
                                       defaultValue={option.value}
-                                      // defaultChecked={option.checked} // Avoid using defaultChecked with controlled components
                                       className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                     />
                                     <label htmlFor={`filter-mobile-${section.id}-${optionIdx}`} className="text-gray-500">
@@ -349,30 +329,8 @@ export default function Product() {
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
               {/* Filters (Desktop) */}
               <form className="hidden lg:block">
-                {/* Removed Sub Categories list */}
-                 {/* <ul className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900">
-                  {subCategories.map((category) => (
-                    <li key={category.name}>
-                      <a href={category.href || '#'}>{category.name}</a>
-                    </li>
-                  ))}
-                </ul> */}
-
-                {/* Removed Category Filter (Desktop) */}
-                {/* <Disclosure key="category" as="div" className="border-b border-gray-200 py-6">
-                  {({ open }) => (
-                    <>
-                       ... category filter JSX ...
-                    </>
-                  )}
-                </Disclosure> */}
-
-                {/* Use filters from filterData */}
-                {/* Only map filters that are not category if needed,
-                    or assume filterData.filters no longer contains category */}
                 {filters.map((section) => (
-                   // Added condition to only render if section.id is not 'category'
-                   section.id !== 'category' && (
+                  section.id !== 'category' && (
                     <Disclosure key={section.id} as="div" className="border-b border-gray-200 py-6">
                       {({ open }) => (
                         <>
@@ -392,19 +350,18 @@ export default function Product() {
                             <div className="space-y-4">
                               {section.options.map((option, optionIdx) => (
                                 <div key={option.value} className="flex items-center gap-3">
-                                  {/* Render filter options based on section.id */}
                                   {section.id === 'size' ? (
                                     <>
                                       <input
                                         type="radio"
-                                        id={`filter-desktop-${section.id}-${optionIdx}`} // Corrected ID
+                                        id={`filter-desktop-${section.id}-${optionIdx}`}
                                         name="size"
                                         value={option.value}
                                         checked={selectedSize === option.value}
                                         onChange={handleSizeChange}
                                         className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                       />
-                                      <label htmlFor={`filter-desktop-${section.id}-${optionIdx}`} className="text-sm text-gray-600"> {/* Corrected htmlFor */}
+                                      <label htmlFor={`filter-desktop-${section.id}-${optionIdx}`} className="text-sm text-gray-600">
                                         {option.label}
                                       </label>
                                     </>
@@ -419,7 +376,7 @@ export default function Product() {
                                         onChange={handlePriceRangeChange}
                                         className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                       />
-                                      <label htmlFor={`filter-desktop-${section.id}-${optionIdx}`} className="text-sm text-gray-600"> {/* Corrected htmlFor */}
+                                      <label htmlFor={`filter-desktop-${section.id}-${optionIdx}`} className="text-sm text-gray-600">
                                         {option.label}
                                       </label>
                                     </>
@@ -434,7 +391,7 @@ export default function Product() {
                                         onChange={handleBrandChange}
                                         className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                       />
-                                      <label htmlFor={`filter-desktop-${section.id}-${optionIdx}`} className="text-sm text-gray-600"> {/* Corrected htmlFor */}
+                                      <label htmlFor={`filter-desktop-${section.id}-${optionIdx}`} className="text-sm text-gray-600">
                                         {option.label}
                                       </label>
                                     </>
@@ -449,12 +406,11 @@ export default function Product() {
                                         onChange={handleDiscountPercentChange}
                                         className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                       />
-                                      <label htmlFor={`filter-desktop-${section.id}-${optionIdx}`} className="text-sm text-gray-600"> {/* Corrected htmlFor */}
+                                      <label htmlFor={`filter-desktop-${section.id}-${optionIdx}`} className="text-sm text-gray-600">
                                         {option.label}
                                       </label>
                                     </>
                                   ) : (
-                                    // Fallback for other filter types if necessary
                                     <>
                                       <input
                                         type="checkbox"
@@ -475,7 +431,7 @@ export default function Product() {
                         </>
                       )}
                     </Disclosure>
-                   )
+                  )
                 ))}
               </form>
 
@@ -483,14 +439,11 @@ export default function Product() {
               {/* Product grid */}
               <div className="lg:col-span-4 w-full">
                 <div className="flex flex-wrap justify-center bg-white py-5">
-                  {/* Wrap ProductCard with Link */}
                   {filteredProducts.map((item, index) => (
                     <Link
-                      key={item.id || index} // Use product id for key if available, fallback to index
-                      to={`/product/${item.id}`} // Use 'to' instead of 'href' for react-router-dom
-                    // Remove passHref as it's not needed for react-router-dom
+                      key={item.id || index}
+                      to={`/product/${item.id}`}
                     >
-                      {/* ProductCard component - Make sure it's just rendering the product UI */}
                       <ProductCard product={item} />
                     </Link>
                   ))}

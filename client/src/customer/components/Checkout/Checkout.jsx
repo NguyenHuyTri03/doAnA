@@ -6,8 +6,8 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useLocation, useNavigate } from 'react-router-dom';
-import DeliveryAForm from './DeliveryAForm';
 import OrderSummary from './OrderSummary';
+import Delivery from './Delivery';
 
 function getSteps() {
     return ['Login', 'Add delivery address', 'Order summary', 'Payment method'];
@@ -46,7 +46,6 @@ export default function Checkout() {
 
     return (
         <div className="min-h-screen flex flex-col">
-            {/* Nội dung chính */}
             <div className="flex-grow px-10 lg:px-20">
                 <Box sx={{ width: '100%' }}>
                     <Stepper activeStep={activeStep - 1}>
@@ -77,7 +76,7 @@ export default function Checkout() {
                                     </Button>
                                 </Box>
                                 <div>
-                                    {activeStep === 2 ? <DeliveryAForm /> : <OrderSummary />}
+                                    {activeStep === 2 ? <Delivery /> : <OrderSummary />}
                                 </div>
                             </>
                         )}
