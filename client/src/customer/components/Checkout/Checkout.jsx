@@ -20,7 +20,8 @@ export default function Checkout() {
     const querySearch = new URLSearchParams(location.search);
 
     const stepFromQuery = parseInt(querySearch.get('step'));
-    const initialStep = (stepFromQuery >= 1 && stepFromQuery <= steps.length) ? stepFromQuery : 1;
+    const initialStep =
+        stepFromQuery >= 1 && stepFromQuery <= steps.length ? stepFromQuery : 1;
 
     const [activeStep, setActiveStep] = React.useState(initialStep);
 
@@ -32,7 +33,10 @@ export default function Checkout() {
         } else if (activeStep === steps.length + 1) {
             const newQuery = new URLSearchParams(location.search);
             newQuery.delete('step');
-            navigate(`${location.pathname}${newQuery.toString() ? `?${newQuery.toString()}` : ''}`, { replace: true });
+            navigate(
+                `${location.pathname}${newQuery.toString() ? `?${newQuery.toString()}` : ''}`,
+                { replace: true }
+            );
         }
     }, [activeStep, steps.length, location.search, location.pathname, navigate]);
 
@@ -45,8 +49,8 @@ export default function Checkout() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col">
-            <div className="flex-grow px-10 lg:px-20">
+        <div className="min-h-screen flex flex-col pt-28">
+            <div className="flex-grow px-4 sm:px-8 lg:px-20">
                 <Box sx={{ width: '100%' }}>
                     <Stepper activeStep={activeStep - 1}>
                         {steps.map((label) => (
@@ -56,35 +60,37 @@ export default function Checkout() {
                         ))}
                     </Stepper>
 
-                    <Box sx={{ mt: 2 }}>
+                    <Box sx={{ mt: 4 }}>
                         {activeStep > steps.length ? (
                             <Typography sx={{ mt: 2, mb: 2 }}>
                                 All steps completed — you're finished!
                             </Typography>
                         ) : (
                             <>
-                                <Typography sx={{ mt: 2, mb: 2 }}>
-                                    Step {activeStep}
-                                </Typography>
-                                <Box>
+                                <div className="my-6">
+                                    {activeStep === 2 ? <Delivery /> : <OrderSummary />}
+                                </div>
+
+                                <Box className="flex justify-between mt-6">
                                     <Button
+                                        variant="outlined"
                                         disabled={activeStep === 1}
                                         onClick={handleBack}
-                                        sx={{ mr: 1 }}
                                     >
                                         Back
                                     </Button>
+
+                                    {activeStep <= steps.length && (
+                                        <Button variant="contained" onClick={handleNext}>
+                                            Next
+                                        </Button>
+                                    )}
                                 </Box>
-                                <div>
-                                    {activeStep === 2 ? <Delivery /> : <OrderSummary />}
-                                </div>
                             </>
                         )}
                     </Box>
                 </Box>
             </div>
-
-          
         </div>
     );
 }

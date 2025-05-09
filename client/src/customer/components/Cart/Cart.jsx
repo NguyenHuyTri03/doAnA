@@ -6,7 +6,7 @@ const Cart = () => {
   return (
     <div>
       {/* danh sách sản phẩm */}
-      <div className='lg:grid grid-cols-3 lg:px-16 relative '>
+      <div className='lg:grid grid-cols-3 lg:px-16 relative pt-28'>
         <div className='col-span-2'>
           {[1, 1, 1, 1].map((item) => <CartItem />)}
         </div>
@@ -38,7 +38,7 @@ const Cart = () => {
             </div>
 
             <Button
-            href='/checkout'
+              href='/checkout'
               variant='contained'
               className='w-full mt-5'
               sx={{ px: "2.5rem", py: ".7rem", bgcolor: "#9155fd", "&:hover": { bgcolor: "#7e3ff2" } }}

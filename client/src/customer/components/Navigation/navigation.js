@@ -7,7 +7,7 @@ const navigation = {
           name: 'Các loại sản phẩm',
           items: [
             {
-              name: 'Cà phê',
+              name: 'Cà phê', href: '/products',
               children: [
                 { name: 'Cà phê rang' },
                 { name: 'Cà phê xay' },

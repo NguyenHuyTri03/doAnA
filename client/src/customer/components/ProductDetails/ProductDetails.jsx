@@ -10,7 +10,7 @@ import ProductReviewCard from './ProductReviewCard.jsx'
 import LinearProgress from '@mui/material/LinearProgress';
 import HomeSectionCard from '../ProductSectionCard/ProductSectionCard.jsx'
 import test from '../../../Data/test.js'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 
 function classNames(...classes) {
@@ -20,9 +20,12 @@ function classNames(...classes) {
 const reviews = { href: '', average: 4, totalCount: 117 }
 
 export default function ProductDetails() {
+
     const { productId } = useParams()
     const [product, setProduct] = useState(null)
     const [selectedSize, setSelectedSize] = useState(null)
+    const [quantity, setQuantity] = useState(1)
+    const navigate = useNavigate()
 
     useEffect(() => {
         const foundProduct = productData.find(p => p.id === parseInt(productId))
@@ -43,7 +46,12 @@ export default function ProductDetails() {
             </div>
         )
     }
-
+    // navigate to cart
+    const handleAddToCart = () => {
+        if (!selectedSize) return
+        console.log('Add to cart', { product, selectedSize, quantity })
+        navigate('/cart')
+    }
     const mappedSizes = product.size
         ? product.size.map(s => ({
             name: s.name,
@@ -62,6 +70,7 @@ export default function ProductDetails() {
             ? { id: 2, name: product.brand, href: `/products?Brand=${product.brand}` }
             : null
     ].filter(Boolean)
+
 
     return (
         <div className="bg-white min-h-screen px-4 py-6 sm:px-8 sm:py-10">
@@ -165,23 +174,63 @@ export default function ProductDetails() {
                                             key={size.name}
                                             value={size}
                                             disabled={!size.inStock}
-                                            className={classNames(
-                                                size.inStock ? 'bg-white text-gray-900 hover:bg-gray-50' : 'bg-gray-50 text-gray-400 cursor-not-allowed',
-                                                'rounded border py-2 text-sm font-medium text-center'
-                                            )}
+                                            className={({ checked }) =>
+                                                classNames(
+                                                    'py-2 px-2 rounded border text-sm font-medium text-center transition duration-200 shadow-sm',
+                                                    size.inStock
+                                                        ? checked
+                                                            ? 'bg-orange-100 text-orange-800 border-orange-500 ring-2 ring-orange-400'
+                                                            : 'bg-white text-gray-900 hover:bg-orange-50 hover:border-orange-400'
+                                                        : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                                )
+                                            }
                                         >
-                                            {size.name}
+                                            <div className="flex flex-col items-center">
+                                                <span>{size.name}</span>
+                                                {!size.inStock && (
+                                                    <span className="text-[10px] text-red-400">Out of stock</span>
+                                                )}
+                                            </div>
                                         </Radio>
                                     ))}
                                 </RadioGroup>
+
                             ) : (
                                 <p className="text-sm text-gray-500 mt-2">No size available.</p>
                             )}
                         </div>
 
+                        <div className="mt-4">
+                            <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-1">
+                                Quantity
+                            </label>
+                            <div className="flex items-center space-x-2">
+                                <button
+                                    onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                                    className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                                >
+                                    -
+                                </button>
+                                <input
+                                    type="number"
+                                    id="quantity"
+                                    min="1"
+                                    value={quantity}
+                                    onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                                    className="w-16 border rounded px-2 py-1 text-center"
+                                />
+                                <button
+                                    onClick={() => setQuantity(q => q + 1)}
+                                    className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                                >
+                                    +
+                                </button>
+                            </div>
+                        </div>
+
                         <button
                             type="submit"
-                            onClick={() => console.log('test')}
+                            onClick={handleAddToCart}
                             disabled={!selectedSize}
                             className={classNames(
                                 !selectedSize ? 'bg-gray-300 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700',
@@ -192,10 +241,10 @@ export default function ProductDetails() {
                         </button>
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* Rating and reviews  */}
-            <section className="mt-12 bg-gray-50 p-6 rounded-xl shadow-sm">
+            <section section className="mt-12 bg-gray-50 p-6 rounded-xl shadow-sm" >
                 <h1 className="font-semibold text-xl pb-4 text-gray-800">Recent reviews and rating</h1>
                 <Grid container spacing={7}>
                     <Grid item xs={12} md={7}>
@@ -291,10 +340,10 @@ export default function ProductDetails() {
                         </Box>
                     </Grid>
                 </Grid>
-            </section>
+            </section >
 
             {/* Similar products */}
-            <section className='pt-10'>
+            <section section className='pt-10' >
                 <h1 className='py-5 text-xl font-bold '>
                     similar products
                 </h1>
@@ -309,7 +358,8 @@ export default function ProductDetails() {
                         </Link>
                     ))}
                 </div>
-            </section>
-        </div>
+            </section >
+        </div >
     )
 }
+

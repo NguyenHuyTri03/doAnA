@@ -2,34 +2,76 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 
-const HomeSectionCard = () => {
-    const [product, setProduct] = useState([]);
+const ProductSectionCard = () => {
+    const [products, setProducts] = useState([]);
+
     useEffect(() => {
-        fetch("http://localhost:8080/api/products")
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                setProduct(data);
-            })
-            .catch((err) => {
-                console.log(err.messeage);
-            })
-    });
+        const fetchProducts = async () => {
+            try {
+                const response = await fetch("http://localhost:8080/api/products");
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                // Map the API response to our Product interface
+                const formattedProducts = data.map((item) => ({
+                    id: item.id,
+                    imageUrl: item.imageUrl,
+                    name: item.name,
+                    category: item.category,
+                    price: item.price,
+                    discountPercent: item.discountPercent,
+                    size: item.size || [],
+                    description: item.description,
+                }));
+
+                setProducts(formattedProducts);
+            } catch (err) {
+                console.error("Error fetching products:", err);
+            }
+        };
+
+        fetchProducts();
+    }, []);
 
     return (
-        <Link to={`/product/${product.id}`}>
-            <div className='cursor-pointer flex flex-col items-center bg-white rounded-lg shadow-lg overflow-hidden w-[15rem] mx-3 border border-black'>
-                <div className='h-[13rem] w-[10rem]'>
-                    <img className='object-cover object-top w-full h-full' src={product.imageUrl} alt={product.name} />
-                </div>
-                <div className='p-4'>
-                    <h3 className='text-lg font-medium text-gray-900'>{product.name}</h3>
-                    <p className='mt-2 text-sm text-gray-500'>{product.category}</p>
-                </div>
-            </div>
-        </Link>
+        <div className="product-section-card">
+            {products.map((product) => (
+                <Link to={`/product/${product.id}`} key={product.id} className='productCard w-[15rem] m-3 transition-all cursor-pointer'>
+                    <div className='h-[20rem]'>
+                        <img
+                            className='h-full w-full object-cover object-left-top'
+                            src={product.imageUrl}
+                            alt='Product' />
+                    </div>
+                    <div className='textPart bg-white p-3'>
+                        <div>
+                            <p className='font-bold opacity-60'>{product.name}</p>
+                            <p>{product.title}</p>
+                        </div>
+                        <div className='flex items-center space-x-2'>
 
-    );
+                            {product.discountPercent > 0 && (
+                                <div className="flex items-center mb-1 space-x-4">
+                                    <span className="line-through text-gray-500">{product.price.toLocaleString()}đ</span>
+                                    <span className="text-green-600 font-medium">{product.discountPercent}% Off</span>
+                                </div>
+                            )}
+
+                            <p className="font-semibold text-gray-900">
+                                {product.discountPercent > 0
+                                    ? `${(product.price * (1 - product.discountPercent / 100)).toLocaleString()}đ`
+                                    : `${product.price.toLocaleString()}đ`}
+                            </p>
+
+                        </div>
+                    </div>
+                </Link>
+            ))}
+        </div>
+
+    )
 };
 
-export default HomeSectionCard;
+export default ProductSectionCard;
