@@ -18,7 +18,6 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     public User createUser(String name, String email, String password, String phone) {
-        System.out.println(password);
         // Check if user already exists by email
         if (userRepository.findByEmail(email).isPresent()) {
             throw new RuntimeException("User with this email already exists");

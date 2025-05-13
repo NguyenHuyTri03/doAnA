@@ -24,7 +24,7 @@ import { useAuth } from '../Auth/AuthContext';
 export default function Navigation() {
     const [open, setOpen] = useState(false);
     const [expandedCategories, setExpandedCategories] = useState({});
-    const { user, logout } = useAuth();
+    const { user, logout, loading } = useAuth();
 
     const toggleCategory = (categoryName) => {
         setExpandedCategories(prev => ({
@@ -214,7 +214,7 @@ export default function Navigation() {
                                     <span className="ml-2 text-sm font-semibold">0</span>
                                 </a>
 
-                                {user ? (
+                                {user && loading == false ? (
                                     <div>
                                         <span>{user.sub}</span> {/* or user.email depending on your JWT payload */}
                                         <button onClick={logout}>Đăng Xuất</button>

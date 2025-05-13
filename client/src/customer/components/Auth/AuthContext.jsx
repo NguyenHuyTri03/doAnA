@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.getItem("tokens") ? JSON.parse(localStorage.getItem("tokens")) : null
     );
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     // Update user when tokens are available
     useEffect(() => {
@@ -15,6 +16,7 @@ export const AuthProvider = ({ children }) => {
             const decodedToken = JSON.parse(atob(authTokens.access_token.split('.')[1]));
             setUser(decodedToken);
         }
+        setLoading(false);
     }, [authTokens]);
 
     // Login function to get JWT tokens
@@ -32,8 +34,8 @@ export const AuthProvider = ({ children }) => {
                 const data = await response.json();
                 if (data.token) {
                     const tokens = {
-                        access_token: data.token, // <- match server key
-                        // refresh_token: data.refresh_token, // add this if server sends it
+                        access_token: data.token,
+                        // refresh_token: data.refresh_token,       // add later when doing token refresh
                     };
 
                     localStorage.setItem("tokens", JSON.stringify(tokens));
@@ -50,10 +52,26 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    // Handle login by Google
+    const handleGoogleLogin = async (tokenFromUrl, onSuccess) => {
+        const tokens = {
+            access_token: tokenFromUrl,
+        };
+
+        localStorage.setItem("tokens", JSON.stringify(tokens));
+        setAuthTokens(tokens);
+
+        const decodedToken = JSON.parse(atob(tokenFromUrl.split('.')[1]));
+        setUser(decodedToken);
+
+        if (onSuccess) onSuccess(); // optional callback
+    };
+
     // Logout function to remove tokens and user data
     const logout = async () => {
         // If there are tokens in localStorage, send a logout request to the server
         const token = authTokens?.access_token;
+        console.log(authTokens);
 
         if (token) {
             try {
@@ -81,7 +99,7 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
     };
 
-    // Function to refresh tokens (you can use this for token expiry)
+    // Function to refresh tokens
     const refreshTokens = async () => {
         try {
             const response = await fetch("http://localhost:8080/api/auth/refresh", {
@@ -118,7 +136,7 @@ export const AuthProvider = ({ children }) => {
 
     // Protect the app with the tokens context
     return (
-        <AuthContext.Provider value={{ authTokens, user, login, logout, refreshTokens }}>
+        <AuthContext.Provider value={{ authTokens, user, login, logout, refreshTokens, handleGoogleLogin, loading }}>
             {children}
         </AuthContext.Provider>
     );

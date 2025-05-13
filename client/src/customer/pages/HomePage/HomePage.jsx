@@ -3,8 +3,11 @@ import MainCarousel from '../../components/HomeCarousel/MainCarousel';
 import './HomePage.css';
 import { Link } from 'react-router-dom';
 import bcrypt from 'bcryptjs';
+import { useAuth } from '../../components/Auth/AuthContext';
 
 const HomePage = () => {
+  const { authTokens } = useAuth();
+  console.warn(authTokens);
 
   return (
     <div className="home-page">

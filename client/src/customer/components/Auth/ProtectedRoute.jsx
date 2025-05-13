@@ -5,10 +5,10 @@ import { useAuth } from "./AuthContext";
 import { Navigate } from 'react-router-dom';
 
 const ProtectedRoute = ({ element: Component, ...rest }) => {
-    const { authTokens } = useAuth();
+    const { authTokens, loading } = useAuth();
 
     // If no authTokens, redirect to login page
-    if (!authTokens) {
+    if (!authTokens && loading == false) {
         return <Navigate to="/login" replace />;
     }
 

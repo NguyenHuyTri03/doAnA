@@ -1,4 +1,4 @@
-package com.doana.doana.controllers;
+package com.doana.doana.services;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

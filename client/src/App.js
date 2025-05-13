@@ -15,6 +15,7 @@ import DashBoard from './Admin/DashBoard.jsx';
 import AddProduct from './Admin/AddProduct.jsx';
 import { AuthProvider } from './customer/components/Auth/AuthContext.jsx';
 import ProtectedRoute from './customer/components/Auth/ProtectedRoute.jsx';
+import GoogleCallback from './customer/components/Auth/GoogleCallback.jsx';
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
           <Route path="/lien-he" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/auth/google/callback" element={<GoogleCallback />} />
         </Routes>
       </BrowserRouter>
       <Footer />

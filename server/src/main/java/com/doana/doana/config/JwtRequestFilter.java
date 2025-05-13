@@ -1,6 +1,6 @@
 package com.doana.doana.config;
 
-import com.doana.doana.controllers.JwtUtil;
+import com.doana.doana.services.JwtUtil;
 import com.doana.doana.services.CustomUserDetailsService;
 import com.doana.doana.services.TokenBlacklistService;
 import jakarta.servlet.FilterChain;
@@ -11,12 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
@@ -28,6 +28,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Autowired
     private TokenBlacklistService tokenBlacklistService;
 
+    private static final List<String> EXCLUDED_PATHS = List.of(
+            "/api/auth/", "/login/oauth2/", "/oauth2/", "/auth/google/callback"
+    );
+
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        // Skip any requests matching our excluded paths
+        return EXCLUDED_PATHS.stream().anyMatch(path::startsWith);
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -53,7 +64,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 username = jwtUtil.extractUsername(jwt);
             } catch (Exception e) {
                 System.out.println("Invalid JWT Token: " + e.getMessage());
-                // You may also want to set response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             }
         }
 

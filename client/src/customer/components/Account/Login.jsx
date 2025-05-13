@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Box,
     Button,
@@ -9,18 +9,30 @@ import {
 } from '@mui/material';
 import { useAuth } from '../Auth/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import GoogleIcon from '@mui/icons-material/Google';
 
 
 const Login = () => {
     const { login } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const { user, loading } = useAuth();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (loading == false && user) {
+            navigate("/");
+        }
+    }, []);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         await login(email, password);
         navigate("/");
+    };
+
+    const handleGoogleLogin = () => {
+        window.location.href = 'http://localhost:8080/oauth2/authorization/google';
     };
 
     return (
@@ -88,6 +100,17 @@ const Login = () => {
                     >
                         Đăng Nhập
                     </Button>
+
+                    <Button
+                        fullWidth
+                        variant="outlined"
+                        startIcon={<GoogleIcon />}
+                        onClick={handleGoogleLogin}
+                        sx={{ mb: 2 }}
+                    >
+                        Đăng nhập với Google
+                    </Button>
+
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
                         <Link href="#" variant="body2">
                             Quên mật khẩu?
