@@ -1,7 +1,6 @@
 import React from 'react';
-import { Grid, Box, Button, TextField, Typography } from '@mui/material';
+import { Box, Button, TextField, Typography } from '@mui/material';
 import AddressCard from '../AddressCard/AddressCard';
-
 
 const Delivery = () => {
     const handleSubmit = (e) => {
@@ -13,65 +12,59 @@ const Delivery = () => {
             address: data.get('address'),
             city: data.get('city'),
             state: data.get('state'),
-            zip: data.get('zip'),
             phone: data.get('phone')
         }
         console.log("address", address);
     }
 
-
-
     return (
         <Box p={4}>
-            <Grid container spacing={4}>
-                <Grid item xs={12} md={5}>
+            <div className="flex flex-col md:flex-row gap-4">
+                {/* Left Panel */}
+                <div className="w-full md:w-5/12">
                     <Box
-                        className="shadow-md border rounded-md"
-                        p={3}
-                        height="100%"
-                        display="flex"
-                        flexDirection="column"
-                        justifyContent="space-between"
+                        className="shadow-md border rounded-md h-full flex flex-col justify-between p-3"
                     >
                         <Typography variant="caption" color="text.secondary" sx={{ mb: 1 }}>BACK</Typography>
                         <AddressCard />
                         <Button
-                            sx={{ mt: 3, backgroundColor: "rgb(145,85,253)", '&:hover': { backgroundColor: "rgb(125,65,233)" } }}
+                            sx={{
+                                mt: 3,
+                                backgroundColor: "rgb(145,85,253)",
+                                '&:hover': { backgroundColor: "rgb(125,65,233)" }
+                            }}
                             variant="contained"
                             fullWidth
                         >
-                            DELIVER HERE
+                            GIAO ĐẾN ĐỊA CHỈ NÀY
                         </Button>
                     </Box>
-                </Grid>
+                </div>
 
-                <Grid item xs={12} md={7}>
-                    <Box className="shadow-md border rounded-md" p={3}>
+                {/* Right Panel (Form) */}
+                <div className="w-full md:w-7/12">
+                    <Box className="shadow-md border rounded-md p-3">
                         <form onSubmit={handleSubmit}>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12} sm={6}>
+                            <div className="flex flex-wrap -mx-2">
+                                <div className="w-full sm:w-1/2 px-2 mb-4">
                                     <TextField id="firstName" name="firstName" autoComplete="given-name" required fullWidth label="First Name" />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField id="lastName" name="lastName" autoComplete="given-name" required fullWidth label="Last Name" />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField id="address" name="address" autoComplete="given-name" required fullWidth label="Address" multiline rows={2} />
-
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField required fullWidth label="City" />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField required fullWidth label="State/Province/Region" />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField required fullWidth label="Zip / Postal code" />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField required fullWidth label="Phone Number" />
-                                </Grid>
-                                <Grid item xs={12}>
+                                </div>
+                                <div className="w-full sm:w-1/2 px-2 mb-4">
+                                    <TextField id="lastName" name="lastName" autoComplete="family-name" required fullWidth label="Last Name" />
+                                </div>
+                                <div className="w-full px-2 mb-4">
+                                    <TextField id="address" name="address" autoComplete="street-address" required fullWidth label="Address" multiline rows={2} />
+                                </div>
+                                <div className="w-full sm:w-1/2 px-2 mb-4">
+                                    <TextField id="city" name="city" required fullWidth label="City" />
+                                </div>
+                                <div className="w-full sm:w-1/2 px-2 mb-4">
+                                    <TextField id="state" name="state" required fullWidth label="State/Province/Region" />
+                                </div>
+                                <div className="w-full sm:w-1/2 px-2 mb-4">
+                                    <TextField id="phone" name="phone" required fullWidth label="Phone Number" />
+                                </div>
+                                <div className="w-full px-2">
                                     <Button
                                         type="submit"
                                         variant="contained"
@@ -82,14 +75,14 @@ const Delivery = () => {
                                             mt: 2
                                         }}
                                     >
-                                        DELIVER HERE
+                                        GIAO ĐẾN ĐỊA CHỈ NÀY
                                     </Button>
-                                </Grid>
-                            </Grid>
+                                </div>
+                            </div>
                         </form>
                     </Box>
-                </Grid>
-            </Grid>
+                </div>
+            </div>
         </Box>
     );
 };

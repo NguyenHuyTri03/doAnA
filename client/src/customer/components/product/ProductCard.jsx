@@ -14,14 +14,19 @@ const ProductCard = ({ product }) => {
       <div className='textPart bg-white p-3'>
         <div>
           <p className='font-bold opacity-60'>{product.name}</p>
-          <p>{product.title}</p>
+          <p>{product.category}</p>
         </div>
         <div className='flex items-center space-x-2'>
-          <p className='fonts-semibold'>${product.price}</p>
+          <p className='line-through opacity-50'>{product.price}đ</p>
           <p className='text-green-600 font-semibold'>{product.discountPercent}% off</p>
         </div>
+
+        <p className='fonts-bold text-orange-600'>
+          {(product.price * (1 - product.discountPercent / 100)).toLocaleString()}đ
+        </p>
       </div>
     </div>
+
 
 
 

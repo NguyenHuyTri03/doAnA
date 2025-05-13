@@ -7,20 +7,25 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
 @CrossOrigin
+@RequestMapping("/api/user")
 public class UserController {
     @Autowired
     UserRepository userRepository;
 
     @GetMapping("/ping")
-    public String Ping() {
-        return "Pong";
+    public ResponseEntity<?> Ping() {
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Pong!");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/user")
+    @PostMapping("/")
     public ResponseEntity CreateUser(@RequestBody User newUser) {
         try {
             userRepository.save(newUser);
@@ -31,7 +36,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity GetUser(@PathVariable Long id) {
         try {
             Optional<User> user = userRepository.findById(id);
@@ -47,7 +52,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/user")
+    @PutMapping("/")
     public ResponseEntity UpdateUser(@RequestBody User newUser) {
         try {
             userRepository.save(newUser);
@@ -58,7 +63,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/user")
+    @DeleteMapping("/")
     public ResponseEntity DeleteUser(@RequestBody User user) {
         try {
             userRepository.delete(user);

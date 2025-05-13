@@ -19,7 +19,7 @@ export default function Checkout() {
     const navigate = useNavigate();
     const querySearch = new URLSearchParams(location.search);
 
-    const stepFromQuery = parseInt(querySearch.get('step'));
+    const stepFromQuery = parseInt(querySearch.get('step') ?? '0');
     const initialStep =
         stepFromQuery >= 1 && stepFromQuery <= steps.length ? stepFromQuery : 1;
 
@@ -63,7 +63,7 @@ export default function Checkout() {
                     <Box sx={{ mt: 4 }}>
                         {activeStep > steps.length ? (
                             <Typography sx={{ mt: 2, mb: 2 }}>
-                                All steps completed — you're finished!
+                                TẤT CẢ CÁC BƯỚC ĐÃ HOÀN THÀNH
                             </Typography>
                         ) : (
                             <>
@@ -77,12 +77,12 @@ export default function Checkout() {
                                         disabled={activeStep === 1}
                                         onClick={handleBack}
                                     >
-                                        Back
+                                        TRỞ VỀ
                                     </Button>
 
                                     {activeStep <= steps.length && (
                                         <Button variant="contained" onClick={handleNext}>
-                                            Next
+                                            TIẾP THEO
                                         </Button>
                                     )}
                                 </Box>

@@ -13,26 +13,26 @@ const Cart = () => {
         <div className='px-5 sticky top-0 h-[100vh] mt-5 lg:mt-0'>
           <div className='border '>
             {/* bảng tiền  */}
-            <p className='uppercase font-bold  opacity-60 pb-4 '> Price details</p>
+            <p className='uppercase font-bold  opacity-60 pb-4 '> GIÁ TIỀN CHI TIẾT</p>
             <hr />
             <div clasName="space-y-3 font-semibold mb-10 ">
               <div className='flex justify-between pt-3 text-black '>
-                <span>Price</span>
+                <span>GIÁ</span>
                 <span>293</span>
               </div>
 
               <div className='flex justify-between pt-3  '>
-                <span>Discount</span>
+                <span>GIẢM GIÁ</span>
                 <span className='text-green-600'>23</span>
               </div>
 
               <div className='flex justify-between pt-3  '>
-                <span>Delivery charge</span>
+                <span>PHÍ GIAO HÀNG</span>
                 <span className='text-green-600'>free</span>
               </div>
 
               <div className='flex justify-between pt-3 font-bold '>
-                <span>Total amount</span>
+                <span>TỔNG CỘNG</span>
                 <span className='text-green-600 '>343</span>
               </div>
             </div>
@@ -42,7 +42,7 @@ const Cart = () => {
               variant='contained'
               className='w-full mt-5'
               sx={{ px: "2.5rem", py: ".7rem", bgcolor: "#9155fd", "&:hover": { bgcolor: "#7e3ff2" } }}
-            > Checkout</Button>
+            > XÁC NHẬN</Button>
 
           </div>
         </div>

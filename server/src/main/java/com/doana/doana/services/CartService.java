@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CartServices {
+public class CartService {
     @Autowired
     private CartRepository cartRepository;
 

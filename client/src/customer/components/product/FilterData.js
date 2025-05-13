@@ -6,7 +6,7 @@ const subCategories = [
   
   const filters = [
     {
-      id: 'brand',
+      id: 'name',
       name: 'Brand Coffee',
       options: [
         { value: 'Arabica House', label: 'Arabica House', checked: false },

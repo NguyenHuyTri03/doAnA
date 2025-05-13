@@ -12,7 +12,6 @@ code {
     monospace;
 }
 
-/* Ensure Tailwind directives are included */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

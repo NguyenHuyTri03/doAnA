@@ -29,7 +29,7 @@ export const test = [
   },
   {
     id: 3,
-    imageUrl: "https://plus.unsplash.com/premium_photo-1676627277042-7e59b77a89ca?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    imageUrl: "https://images.unsplash.com/photo-1509042239860-f550ce710b93",
     name: "Espresso Lovers",
     category: "ca-phe-hat",
     price: 549,
@@ -43,7 +43,7 @@ export const test = [
   },
   {
     id: 4,
-    imageUrl: "https://images.unsplash.com/photo-1517256613344-3b33a773745c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    imageUrl: "https://images.unsplash.com/photo-1509042239860-f550ce710b93",
     name: "Colombia Coffee",
     category: "ca-phe-hat",
     price: 459,
@@ -57,7 +57,7 @@ export const test = [
   },
   {
     id: 5,
-    imageUrl: "https://images.unsplash.com/photo-1510525167039-e330266d2648?q=80&w=1887&auto=format&fit=fit&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    imageUrl: "https://images.unsplash.com/photo-1509042239860-f550ce710b93",
     name: "Blend Brew",
     category: "ca-phe-hat",
     price: 699,
@@ -71,7 +71,7 @@ export const test = [
   },
   {
     id: 6,
-    imageUrl: "https://images.unsplash.com/photo-1567306226416-28f0efdc88ce",
+    imageUrl: "https://images.unsplash.com/photo-1509042239860-f550ce710b93",
     name: "Vietnam Legend",
     category: "ca-phe-hoa-tan",
     price: 499,
@@ -85,7 +85,7 @@ export const test = [
   },
   {
     id: 7,
-    imageUrl: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085",
+    imageUrl: "https://images.unsplash.com/photo-1509042239860-f550ce710b93",
     name: "Cold Brew Co.",
     category: "ca-phe-hat",
     price: 489,
@@ -99,7 +99,7 @@ export const test = [
   },
   {
     id: 8,
-    imageUrl: "https://images.unsplash.com/photo-1525134479668-1bee5c7c6845?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    imageUrl: "https://images.unsplash.com/photo-1509042239860-f550ce710b93",
     name: "Decaf Delights",
     category: "ca-phe-hat",
     price: 429,
@@ -113,7 +113,7 @@ export const test = [
   },
   {
     id: 9,
-    imageUrl: "https://images.unsplash.com/photo-1551028150-64b9f39586c3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    imageUrl: "https://images.unsplash.com/photo-1509042239860-f550ce710b93",
     name: "Aeropress Enthusiast",
     category: "ca-phe-hat",
     price: 509,
@@ -127,7 +127,7 @@ export const test = [
   },
   {
     id: 10,
-    imageUrl: "https://images.unsplash.com/photo-1621606782458-418b9d07d9c7?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    imageUrl: "https://images.unsplash.com/photo-1509042239860-f550ce710b93",
     name: "Sweet Coffee Co.",
     category: "ca-phe-hoa-tan",
     price: 299,
@@ -140,8 +140,23 @@ export const test = [
   },
   {
     id: 11,
-    imageUrl: "https://images.unsplash.com/photo-1559496417-35c447670252",
+    imageUrl: "https://images.unsplash.com/photo-1509042239860-f550ce710b93",
     name: "Gourmet Blend",
+    category: "ca-phe-hat",
+    price: 699,
+    discountPercent: 15,
+    size: [
+      { name: "250g", quantity: 25 },
+      { name: "500g", quantity: 15 },
+      { name: "1kg", quantity: 10 },
+    ],
+    description: "Một hỗn hợp đặc biệt với các hạt cà phê chất lượng cao, mang đến hương vị mềm mại, phong phú với chút hương caramel ngọt ngào.",
+  },
+
+  {
+    id: 12,
+    imageUrl: "https://images.unsplash.com/photo-1509042239860-f550ce710b93",
+    name: "Blend",
     category: "ca-phe-hat",
     price: 699,
     discountPercent: 15,

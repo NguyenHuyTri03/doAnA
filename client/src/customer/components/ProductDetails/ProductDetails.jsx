@@ -5,13 +5,11 @@ import { Grid, Rating, Box } from '@mui/material'
 import { StarIcon } from '@heroicons/react/20/solid'
 import { Radio, RadioGroup } from '@headlessui/react'
 import { test as productData } from '../../../Data/test.js'
-import { useParams } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import ProductReviewCard from './ProductReviewCard.jsx'
-import LinearProgress from '@mui/material/LinearProgress';
+import LinearProgress from '@mui/material/LinearProgress'
 import HomeSectionCard from '../ProductSectionCard/ProductSectionCard.jsx'
 import test from '../../../Data/test.js'
-import { Link, useNavigate } from 'react-router-dom'
-
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -20,7 +18,6 @@ function classNames(...classes) {
 const reviews = { href: '', average: 4, totalCount: 117 }
 
 export default function ProductDetails() {
-
     const { productId } = useParams()
     const [product, setProduct] = useState(null)
     const [selectedSize, setSelectedSize] = useState(null)
@@ -42,16 +39,17 @@ export default function ProductDetails() {
     if (!product) {
         return (
             <div className="flex justify-center items-center h-screen text-xl text-gray-600">
-                Loading product... or Product not found.
+                Đang tải sản phẩm... hoặc không tìm thấy sản phẩm.
             </div>
         )
     }
-    // navigate to cart
+
     const handleAddToCart = () => {
         if (!selectedSize) return
-        console.log('Add to cart', { product, selectedSize, quantity })
+        console.log('Thêm vào giỏ hàng:', { product, selectedSize, quantity })
         navigate('/cart')
     }
+
     const mappedSizes = product.size
         ? product.size.map(s => ({
             name: s.name,
@@ -61,16 +59,15 @@ export default function ProductDetails() {
         : []
 
     const mappedImages = product.imageUrl
-        ? Array(4).fill({ src: product.imageUrl, alt: `Image of ${product.name}` })
+        ? Array(4).fill({ src: product.imageUrl, alt: `Hình ảnh của ${product.name}` })
         : []
 
     const breadcrumbs = [
-        { id: 1, name: 'Products', href: '/products' },
+        { id: 1, name: 'Sản phẩm', href: '/products' },
         product.brand
             ? { id: 2, name: product.brand, href: `/products?Brand=${product.brand}` }
             : null
     ].filter(Boolean)
-
 
     return (
         <div className="bg-white min-h-screen px-4 py-6 sm:px-8 sm:py-10">
@@ -90,7 +87,7 @@ export default function ProductDetails() {
                 </ol>
             </nav>
 
-            {/* product details */}
+            {/* Chi tiết sản phẩm */}
             <section className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-10 mt-8">
                 <div className="grid grid-cols-1 gap-8">
                     <div className="flex flex-col items-center">
@@ -124,7 +121,7 @@ export default function ProductDetails() {
                             {product.discountPercent > 0 && (
                                 <div className="flex items-center mb-1 space-x-4">
                                     <span className="line-through text-gray-500">{product.price.toLocaleString()}đ</span>
-                                    <span className="text-green-600 font-medium">{product.discountPercent}% Off</span>
+                                    <span className="text-green-600 font-medium">{product.discountPercent}% giảm</span>
                                 </div>
                             )}
 
@@ -147,21 +144,21 @@ export default function ProductDetails() {
                                 />
                             ))}
                             <a href={reviews.href} className="ml-2 text-sm text-indigo-600 hover:underline">
-                                {reviews.totalCount} reviews
+                                {reviews.totalCount} đánh giá
                             </a>
                         </div>
 
                         <div className="mt-6 space-y-4">
                             <div>
-                                <h3 className="text-sm font-semibold text-gray-900">Description</h3>
+                                <h3 className="text-sm font-semibold text-gray-900">Mô tả</h3>
                                 <p className="text-sm text-gray-700">{product.description}</p>
                             </div>
                         </div>
 
                         <div className="mb-4 mt-6">
                             <div className="flex items-center justify-between">
-                                <h3 className="text-sm font-medium text-gray-900">Size</h3>
-                                <a href="#" className="text-sm text-indigo-600 hover:underline">Size guide</a>
+                                <h3 className="text-sm font-medium text-gray-900">Kích cỡ</h3>
+                                <a href="#" className="text-sm text-indigo-600 hover:underline">Hướng dẫn chọn kích cỡ</a>
                             </div>
                             {mappedSizes.length > 0 ? (
                                 <RadioGroup
@@ -188,21 +185,20 @@ export default function ProductDetails() {
                                             <div className="flex flex-col items-center">
                                                 <span>{size.name}</span>
                                                 {!size.inStock && (
-                                                    <span className="text-[10px] text-red-400">Out of stock</span>
+                                                    <span className="text-[10px] text-red-400">Hết hàng</span>
                                                 )}
                                             </div>
                                         </Radio>
                                     ))}
                                 </RadioGroup>
-
                             ) : (
-                                <p className="text-sm text-gray-500 mt-2">No size available.</p>
+                                <p className="text-sm text-gray-500 mt-2">Không có kích cỡ nào.</p>
                             )}
                         </div>
 
                         <div className="mt-4">
                             <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-1">
-                                Quantity
+                                Số lượng
                             </label>
                             <div className="flex items-center space-x-2">
                                 <button
@@ -237,15 +233,15 @@ export default function ProductDetails() {
                                 'mt-6 w-full py-3 text-white rounded-lg font-semibold transition shadow-md'
                             )}
                         >
-                            Add to Cart
+                            Thêm vào giỏ hàng
                         </button>
                     </div>
                 </div>
-            </section >
+            </section>
 
-            {/* Rating and reviews  */}
-            <section section className="mt-12 bg-gray-50 p-6 rounded-xl shadow-sm" >
-                <h1 className="font-semibold text-xl pb-4 text-gray-800">Recent reviews and rating</h1>
+            {/* Đánh giá sản phẩm */}
+            <section className="mt-12 bg-gray-50 p-6 rounded-xl shadow-sm">
+                <h1 className="font-semibold text-xl pb-4 text-gray-800">Đánh giá gần đây</h1>
                 <Grid container spacing={7}>
                     <Grid item xs={12} md={7}>
                         <div className="space-y-5">
@@ -255,84 +251,39 @@ export default function ProductDetails() {
                         </div>
                     </Grid>
                     <Grid item xs={5}>
-                        <h1 className='text-xl font-semibold pb-2 '> Product Ratings </h1>
-                        <div className='flex items-center space-x-3 '>
+                        <h1 className='text-xl font-semibold pb-2'>Xếp hạng sản phẩm</h1>
+                        <div className='flex items-center space-x-3'>
                             <Rating value={4.6} precision={.5} readOnly />
-                            <p className='opacity-60 '>7894 Ratings </p>
+                            <p className='opacity-60'>7894 lượt đánh giá</p>
                         </div>
 
-                        {/* Product ratings  */}
-                        <Box className="mt-5 space-y-3 ">
-                            {/* Success progress */}
+                        <Box className="mt-5 space-y-3">
                             <Grid container alignItems="center" gap={2}>
-                                <Grid item xs={2}>
-                                    <p>Excellent</p>
-                                </Grid>
+                                <Grid item xs={2}><p>Xuất sắc</p></Grid>
                                 <Grid item xs={7}>
                                     <LinearProgress variant="determinate" value={70} color="success" sx={{ height: 7, width: 200, bgcolor: "#d0d0d0", borderRadius: 4 }} />
                                 </Grid>
                             </Grid>
-                            {/* Very good */}
                             <Grid container alignItems="center" gap={2}>
-                                <Grid item xs={2}>
-                                    <p>Very Good</p>
-                                </Grid>
+                                <Grid item xs={2}><p>Rất tốt</p></Grid>
                                 <Grid item xs={7}>
-                                    <LinearProgress
-                                        variant="determinate"
-                                        value={25}
-                                        sx={{
-                                            height: 7,
-                                            width: 200,
-                                            borderRadius: 4,
-                                            bgcolor: "#d0d0d0",
-                                            '& .MuiLinearProgress-bar': {
-                                                backgroundColor: '#00e676',
-                                                borderRadius: 4,
-                                            },
-                                        }}
-                                    />
+                                    <LinearProgress variant="determinate" value={25} sx={{ height: 7, width: 200, borderRadius: 4, bgcolor: "#d0d0d0", '& .MuiLinearProgress-bar': { backgroundColor: '#00e676' } }} />
                                 </Grid>
                             </Grid>
-
-                            {/*Good  */}
                             <Grid container alignItems="center" gap={2}>
-                                <Grid item xs={2}>
-                                    <p>Good</p>
-                                </Grid>
+                                <Grid item xs={2}><p>Tốt</p></Grid>
                                 <Grid item xs={7}>
-                                    <LinearProgress
-                                        variant="determinate"
-                                        value={25}
-                                        sx={{
-                                            height: 7,
-                                            width: 200,
-                                            borderRadius: 4,
-                                            bgcolor: "#d0d0d0",
-                                            '& .MuiLinearProgress-bar': {
-                                                backgroundColor: '#facc15',
-                                                borderRadius: 4,
-                                            },
-                                        }}
-                                    />
+                                    <LinearProgress variant="determinate" value={25} sx={{ height: 7, width: 200, borderRadius: 4, bgcolor: "#d0d0d0", '& .MuiLinearProgress-bar': { backgroundColor: '#facc15' } }} />
                                 </Grid>
                             </Grid>
-
-                            {/* Avarage */}
                             <Grid container alignItems="center" gap={2}>
-                                <Grid item xs={2}>
-                                    <p>Avarage</p>
-                                </Grid>
+                                <Grid item xs={2}><p>Trung bình</p></Grid>
                                 <Grid item xs={7}>
                                     <LinearProgress variant="determinate" value={20} color="warning" sx={{ height: 7, width: 200, bgcolor: "#d0d0d0", borderRadius: 4 }} />
                                 </Grid>
                             </Grid>
-
-                            {/* Poor */}
                             <Grid container alignItems="center" gap={2}>
-                                <Grid item xs={2}>
-                                    <p>Poor</p>
-                                </Grid>
+                                <Grid item xs={2}><p>Kém</p></Grid>
                                 <Grid item xs={7}>
                                     <LinearProgress variant="determinate" value={15} color="error" sx={{ height: 7, width: 200, bgcolor: "#d0d0d0", borderRadius: 4 }} />
                                 </Grid>
@@ -340,26 +291,19 @@ export default function ProductDetails() {
                         </Box>
                     </Grid>
                 </Grid>
-            </section >
+            </section>
 
-            {/* Similar products */}
-            <section section className='pt-10' >
-                <h1 className='py-5 text-xl font-bold '>
-                    similar products
-                </h1>
+            {/* Sản phẩm tương tự */}
+            <section className='pt-10'>
+                <h1 className='py-5 text-xl font-bold'>Sản phẩm tương tự</h1>
                 <div className='flex flex-wrap space-y-5'>
                     {test.map((item) => (
-                        <Link
-                            key={item.id}
-                            to={`/product/${item.id}`}
-                            className="block"
-                        >
+                        <Link key={item.id} to={`/product/${item.id}`} className="block">
                             <HomeSectionCard product={item} />
                         </Link>
                     ))}
                 </div>
-            </section >
-        </div >
+            </section>
+        </div>
     )
 }
-

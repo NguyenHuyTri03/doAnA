@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import MainCarousel from '../../components/HomeCarousel/MainCarousel';
 import './HomePage.css';
 import { Link } from 'react-router-dom';
+import bcrypt from 'bcryptjs';
 
 const HomePage = () => {
+
   return (
     <div className="home-page">
       <div className="main-content my-12">

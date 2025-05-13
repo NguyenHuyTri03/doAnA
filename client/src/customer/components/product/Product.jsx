@@ -32,7 +32,7 @@ function classNames(...classes) {
 
 export default function Product() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const [selectedBrands, setSelectedBrands] = useState([]);
+  const [selectednames, setSelectednames] = useState([]);
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedPriceRange, setSelectedPriceRange] = useState(null);
   const [selectedDiscountPercentRange, setSelectedDiscountPercentRange] = useState(null);
@@ -41,13 +41,13 @@ export default function Product() {
 
 
 
-  // Hàm xử lý thay đổi Brand
-  const handleBrandChange = (event) => {
+  // Hàm xử lý thay đổi name
+  const handlenameChange = (event) => {
     const { value, checked } = event.target;
     if (checked) {
-      setSelectedBrands([...selectedBrands, value]);
+      setSelectednames([...selectednames, value]);
     } else {
-      setSelectedBrands(selectedBrands.filter(brand => brand !== value));
+      setSelectednames(selectednames.filter(name => name !== value));
     }
   };
 
@@ -74,10 +74,10 @@ export default function Product() {
     let newFilteredProducts = [...test];
 
 
-    // Filter by Brand
-    if (selectedBrands.length > 0) {
+    // Filter by name
+    if (selectednames.length > 0) {
       newFilteredProducts = newFilteredProducts.filter(product =>
-        selectedBrands.includes(product.brand)
+        selectednames.includes(product.name)
       );
     }
 
@@ -97,11 +97,11 @@ export default function Product() {
       const [minPrice, maxPrice] = selectedPriceRange.split('-').map(Number);
       if (maxPrice) {
         newFilteredProducts = newFilteredProducts.filter(
-          product => product.discountedPrice >= minPrice && product.discountedPrice <= maxPrice
+          product => product.price >= minPrice && product.price <= maxPrice
         );
       } else {
         newFilteredProducts = newFilteredProducts.filter(
-          product => product.discountedPrice >= minPrice
+          product => product.price >= minPrice
         );
       }
     }
@@ -137,7 +137,7 @@ export default function Product() {
 
     setFilteredProducts(newFilteredProducts);
 
-  }, [selectedBrands, selectedSize, selectedPriceRange, selectedDiscountPercentRange]);
+  }, [selectednames, selectedSize, selectedPriceRange, selectedDiscountPercentRange]);
 
 
 
@@ -200,21 +200,21 @@ export default function Product() {
                                   <>
                                     <input
                                       type="radio"
-                                      id={`filter-mobile-${section.id}-${optionIdx}`} 
+                                      id={`filter-mobile-${section.id}-${optionIdx}`}
                                       name="size"
                                       value={option.value}
                                       checked={selectedSize === option.value}
                                       onChange={handleSizeChange}
                                       className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                     />
-                                    <label htmlFor={`filter-mobile-${section.id}-${optionIdx}`} className="text-gray-500"> 
+                                    <label htmlFor={`filter-mobile-${section.id}-${optionIdx}`} className="text-gray-500">
                                     </label>
                                   </>
                                 ) : section.id === 'price' ? (
                                   <>
                                     <input
                                       type="radio"
-                                      id={`filter-mobile-${section.id}-${optionIdx}`} 
+                                      id={`filter-mobile-${section.id}-${optionIdx}`}
                                       name="price"
                                       value={option.value}
                                       checked={selectedPriceRange === option.value}
@@ -225,15 +225,15 @@ export default function Product() {
                                       {option.label}
                                     </label>
                                   </>
-                                ) : section.id === 'brand' ? (
+                                ) : section.id === 'name' ? (
                                   <>
                                     <input
                                       type="checkbox"
                                       id={`filter-mobile-${section.id}-${optionIdx}`}
-                                      name="brand"
+                                      name="name"
                                       value={option.value}
-                                      checked={selectedBrands.includes(option.value)}
-                                      onChange={handleBrandChange}
+                                      checked={selectednames.includes(option.value)}
+                                      onChange={handlenameChange}
                                       className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                     />
                                     <label htmlFor={`filter-mobile-${section.id}-${optionIdx}`} className="text-gray-500">
@@ -284,9 +284,9 @@ export default function Product() {
         </Dialog>
 
 
-        <main className="mx-auto px-4 sm:px-6 lg:px-20">
+        <main className="mx-auto px-4 sm:px-6 lg:px-20 "  style={{ paddingTop: '24px' }}>
           <div className="flex items-baseline justify-between border-b border-gray-200 pt-24 pb-6">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900">Coffee & Equipment</h1>
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900">Coffee </h1>
 
 
             <div className="flex items-center">
@@ -380,15 +380,15 @@ export default function Product() {
                                         {option.label}
                                       </label>
                                     </>
-                                  ) : section.id === 'brand' ? (
+                                  ) : section.id === 'name' ? (
                                     <>
                                       <input
                                         type="checkbox"
                                         id={`filter-desktop-${section.id}-${optionIdx}`}
-                                        name="brand"
+                                        name="name"
                                         value={option.value}
-                                        checked={selectedBrands.includes(option.value)}
-                                        onChange={handleBrandChange}
+                                        checked={selectednames.includes(option.value)}
+                                        onChange={handlenameChange}
                                         className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                       />
                                       <label htmlFor={`filter-desktop-${section.id}-${optionIdx}`} className="text-sm text-gray-600">

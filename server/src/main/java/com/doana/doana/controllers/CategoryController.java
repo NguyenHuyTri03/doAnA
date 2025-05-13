@@ -1,7 +1,7 @@
 package com.doana.doana.controllers;
 
 import com.doana.doana.models.Category;
-import com.doana.doana.services.CategoryServices;
+import com.doana.doana.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import java.util.Optional;
 @CrossOrigin
 public class CategoryController {
     @Autowired
-    private CategoryServices categoryService;
+    private CategoryService categoryService;
 
     @PostMapping
     public ResponseEntity<Category> createCategory(@RequestBody Category category) {

@@ -18,10 +18,13 @@ import {
     MinusIcon,
 } from '@heroicons/react/24/outline';
 import { navigation } from './navigation';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../Auth/AuthContext';
 
 export default function Navigation() {
     const [open, setOpen] = useState(false);
     const [expandedCategories, setExpandedCategories] = useState({});
+    const { user, logout } = useAuth();
 
     const toggleCategory = (categoryName) => {
         setExpandedCategories(prev => ({
@@ -109,19 +112,6 @@ export default function Navigation() {
                                     </div>
                                 ))}
                             </div>
-
-                            <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-                                <div className="flow-root">
-                                    <a href="#" className="-m-2 block p-2 text-base font-semibold text-gray-900 hover:text-orange-400 transition">
-                                        Đăng nhập
-                                    </a>
-                                </div>
-                                <div className="flow-root">
-                                    <a href="#" className="-m-2 block p-2 text-base font-semibold text-gray-900 hover:text-orange-400 transition">
-                                        Đăng ký
-                                    </a>
-                                </div>
-                            </div>
                         </div>
                     </DialogPanel>
                 </div>
@@ -166,6 +156,7 @@ export default function Navigation() {
                                                         </svg>
                                                     </PopoverButton>
                                                     <Transition
+                                                        show={open}
                                                         as={Fragment}
                                                         enter="transition ease-out duration-200"
                                                         enterFrom="opacity-0 translate-y-1"
@@ -223,10 +214,24 @@ export default function Navigation() {
                                     <span className="ml-2 text-sm font-semibold">0</span>
                                 </a>
 
-                                <div className="hidden lg:flex space-x-4">
-                                    <a href="#" className="text-sm font-semibold text-gray-700 hover:text-orange-400 transition">Đăng nhập</a>
-                                    <a href="#" className="text-sm font-semibold text-gray-700 hover:text-orange-400 transition">Đăng ký</a>
-                                </div>
+                                {user ? (
+                                    <div>
+                                        <span>{user.sub}</span> {/* or user.email depending on your JWT payload */}
+                                        <button onClick={logout}>Đăng Xuất</button>
+                                    </div>
+                                ) : (
+                                    <div className="hidden lg:flex space-x-4">
+                                        <Link to="/login" className="text-sm font-semibold text-gray-700 hover:text-orange-400 transition">
+                                            Đăng nhập
+                                        </Link>
+                                        <Link to="/register" className="text-sm font-semibold text-gray-700 hover:text-orange-400 transition">
+                                            Đăng ký
+                                        </Link>
+
+                                    </div>
+                                )}
+
+
                             </div>
                         </div>
                     </div>
