@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
+import UserService from "../../../Services/User/UserService";
 
 // Create context
 const AuthContext = createContext();
@@ -12,11 +13,22 @@ export const AuthProvider = ({ children }) => {
 
     // Update user when tokens are available
     useEffect(() => {
-        if (authTokens) {
-            const decodedToken = JSON.parse(atob(authTokens.access_token.split('.')[1]));
-            setUser(decodedToken);
-        }
-        setLoading(false);
+        const fetchUser = async () => {
+            if (authTokens?.access_token) {
+                const decodedToken = JSON.parse(atob(authTokens.access_token.split('.')[1]));
+                const email = decodedToken.sub;
+                try {
+                    const backendUser = await UserService.getCurrentUser(authTokens.access_token, email);
+                    setUser(backendUser);
+                } catch (error) {
+                    console.error("Error fetching user:", error);
+                    setUser(null);
+                }
+            }
+            setLoading(false);
+        };
+
+        fetchUser();
     }, [authTokens]);
 
     // Login function to get JWT tokens
@@ -63,6 +75,10 @@ export const AuthProvider = ({ children }) => {
 
         const decodedToken = JSON.parse(atob(tokenFromUrl.split('.')[1]));
         setUser(decodedToken);
+        if (authTokens) {
+            await UserService.getCurrentUser(authTokens?.access_token, user?.sub);
+        }
+        // console.log("test: ", authTokens?.access_token)
 
         if (onSuccess) onSuccess(); // optional callback
     };
@@ -71,7 +87,6 @@ export const AuthProvider = ({ children }) => {
     const logout = async () => {
         // If there are tokens in localStorage, send a logout request to the server
         const token = authTokens?.access_token;
-        console.log(authTokens);
 
         if (token) {
             try {

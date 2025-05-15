@@ -37,14 +37,14 @@ const ProductSectionCarousel = ({ data, sectionName }) => {
   }, []);
 
   return (
-    <div className="my-8 px-4 lg:px-8">
+    <div className="my-8 px-4 lg:px-20">
       {sectionName && (
-        <h2 className="text-2xl font-bold text-gray-800 mb-4 border-b-2 border-orange-400 inline-block pb-1">
+        <h2 className="text-3xl font-bold text-gray-800 mb-4 border-b-2 border-orange-400 inline-block pb-1">
           {sectionName}
         </h2>
       )}
 
-      <div className="relative bg-white rounded-xl shadow-md p-4">
+      <div className="relative h-full bg-white rounded-xl shadow-md p-4">
         {items.length > 0 && (
           <AliceCarousel
             ref={carouselRef}
@@ -55,6 +55,8 @@ const ProductSectionCarousel = ({ data, sectionName }) => {
             responsive={responsive}
             activeIndex={activeIndex}
             onSlideChanged={syncActiveIndex}
+            className="w-full h-full"
+            wrapperClass="w-full h-full"
           />
         )}
 

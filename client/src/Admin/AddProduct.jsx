@@ -9,6 +9,9 @@ import {
     IconButton,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useAuth } from '../customer/components/Auth/AuthContext';
+import ProductService from '../Services/Product/ProductService';
+import { useNavigate } from 'react-router-dom';
 
 const categories = [
     { value: 'ca-phe-hat', label: 'Cà phê hạt' },
@@ -16,6 +19,7 @@ const categories = [
 ];
 
 const AddProduct = () => {
+    const { authTokens } = useAuth();
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [imageUrl, setImageUrl] = useState('');
@@ -23,6 +27,7 @@ const AddProduct = () => {
     const [category, setCategory] = useState('');
     const [discountPercent, setDiscountPercent] = useState('');
     const [sizes, setSizes] = useState([{ name: '', quantity: 0 }]);
+    const navigate = useNavigate();
 
     const handleSizeChange = (index, field, value) => {
         const newSizes = [...sizes];
@@ -40,7 +45,7 @@ const AddProduct = () => {
         setSizes(newSizes.length > 0 ? newSizes : [{ name: '', quantity: 0 }]);
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const product = {
             name,
             price: parseFloat(price),
@@ -51,8 +56,15 @@ const AddProduct = () => {
             size: sizes.filter(s => s.name.trim() !== ''),
         };
 
-        console.log('🆕 Sản phẩm mới:', product);
-        alert('Đã log sản phẩm mới ra console. Tích hợp xử lý sau.');
+        if (authTokens?.access_token) {
+            const response = await ProductService.createProduct(authTokens.access_token, product);
+            if (response) {
+                alert("Product added");
+                navigate("/admin");
+            }
+        } else {
+            console.error("Error submitting product");
+        }
     };
 
     return (

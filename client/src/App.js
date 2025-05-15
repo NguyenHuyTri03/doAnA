@@ -18,6 +18,7 @@ import ProtectedRoute from './customer/components/Auth/ProtectedRoute.jsx';
 import GoogleCallback from './customer/components/Auth/GoogleCallback.jsx';
 
 function App() {
+
   return (
     <AuthProvider>
       <BrowserRouter>

@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import {
     Dialog,
     DialogBackdrop,
@@ -20,11 +20,13 @@ import {
 import { navigation } from './navigation';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../Auth/AuthContext';
+import UserService from '../../../Services/User/UserService';
 
 export default function Navigation() {
     const [open, setOpen] = useState(false);
     const [expandedCategories, setExpandedCategories] = useState({});
-    const { user, logout, loading } = useAuth();
+    const { user, logout, loading, authTokens } = useAuth();
+    console.log("Token", authTokens?.access_token);
 
     const toggleCategory = (categoryName) => {
         setExpandedCategories(prev => ({
@@ -214,10 +216,18 @@ export default function Navigation() {
                                     <span className="ml-2 text-sm font-semibold">0</span>
                                 </a>
 
-                                {user && loading == false ? (
-                                    <div>
-                                        <span>{user.sub}</span> {/* or user.email depending on your JWT payload */}
-                                        <button onClick={logout}>Đăng Xuất</button>
+                                {(user && loading == false) ? (
+                                    <div className="flex items-center space-x-4">
+                                        <span>{user.name}</span>
+                                        {user.role === "ADMIN" && (
+                                            <Link
+                                                to="/admin"
+                                                className="text-sm font-semibold text-white bg-orange-500 px-4 py-2 rounded hover:bg-orange-600 transition"
+                                            >
+                                                Quản Lý
+                                            </Link>
+                                        )}
+                                        <button onClick={logout} className="text-sm font-semibold text-red-500 hover:text-red-700 transition">Đăng Xuất</button>
                                     </div>
                                 ) : (
                                     <div className="hidden lg:flex space-x-4">

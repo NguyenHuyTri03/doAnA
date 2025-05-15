@@ -12,6 +12,12 @@ code {
     monospace;
 }
 
+.alice-carousel__stage-item {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

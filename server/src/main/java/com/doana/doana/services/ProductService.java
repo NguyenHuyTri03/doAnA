@@ -25,7 +25,7 @@ public class ProductService {
     private CategoryRepository categoryRepository;
 
     // Create a new product
-    @Transactional // Add this annotation.  This is very important!
+    @Transactional
     public Product createProduct(Product product) {
         //  Get category by name.
         Category category = categoryRepository.findByName(product.getCategory().getName());

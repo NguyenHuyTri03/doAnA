@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Box,
     Typography,
@@ -11,15 +11,42 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Link } from 'react-router-dom';
-import { test as productData } from '../Data/test.js';
+import ProductService from '../Services/Product/ProductService';
+import { useAuth } from '../customer/components/Auth/AuthContext';
+// import { test as productData } from '../Data/test.js';
 
 const DashBoard = () => {
+    const { authTokens } = useAuth();
+    const [productData, setProductData] = useState([]);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            if (authTokens?.access_token) {
+                try {
+                    const getAllProducts = await ProductService.getAllProducts(authTokens?.access_token);
+                    setProductData(getAllProducts);
+                } catch (error) {
+                    console.error(`Error getting products: `, error);
+                    throw error;
+                }
+            }
+        };
+
+        fetchProducts()
+    }, []);
+
     const handleEdit = (id) => {
         console.log('Edit sản phẩm ID:', id);
     };
 
-    const handleDelete = (id) => {
-        console.log('Xóa sản phẩm ID:', id);
+    const handleDelete = async (id) => {
+        const response = await ProductService.deleteOne(authTokens.access_token, id);
+        if (response) {
+            alert("Đã xóa sản phẩm id: ", id);
+            window.location.reload();
+        } else {
+            console.error("Xóa sp ko thành công");
+        }
     };
 
     return (
@@ -38,7 +65,7 @@ const DashBoard = () => {
                 <Typography variant="h4" fontWeight="bold">Quản lý Sản phẩm</Typography>
                 <Box display="flex" gap={2}>
                     <Button component={Link} to="/add-product" variant="contained" color="primary">
-                        ➕ Thêm sản phẩm
+                        ➕   Thêm sản phẩm
                     </Button>
                     <Button component={Link} to="/" variant="outlined">Về Trang Chủ</Button>
                 </Box>
@@ -84,7 +111,7 @@ const DashBoard = () => {
                                 {product.price.toLocaleString()} VNĐ
                             </Typography>
                             <Typography variant="body2" mt={1}>
-                                {product.size.map(s => `${s.name}: ${s.quantity}`).join(' | ')}
+                                {product.sizes.map(s => `${s.name}: ${s.quantity}`).join(' | ')}
                             </Typography>
 
                             <Box mt={2} display="flex" justifyContent="space-between">
