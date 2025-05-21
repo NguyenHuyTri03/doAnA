@@ -4,12 +4,14 @@ import { useState, useEffect } from 'react'
 import { Grid, Rating, Box } from '@mui/material'
 import { StarIcon } from '@heroicons/react/20/solid'
 import { Radio, RadioGroup } from '@headlessui/react'
-import { test as productData } from '../../../Data/test.js'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import ProductReviewCard from './ProductReviewCard.jsx'
 import LinearProgress from '@mui/material/LinearProgress'
 import HomeSectionCard from '../ProductSectionCard/ProductSectionCard.jsx'
 import test from '../../../Data/test.js'
+import { useAuth } from '../Auth/AuthContext.jsx'
+import ProductService from '../../../Services/Product/ProductService.jsx'
+import LoadingSpinner from '../Loader/loadingSpin.jsx'
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -18,28 +20,45 @@ function classNames(...classes) {
 const reviews = { href: '', average: 4, totalCount: 117 }
 
 export default function ProductDetails() {
+    const { authTokens } = useAuth();
     const { productId } = useParams()
-    const [product, setProduct] = useState(null)
-    const [selectedSize, setSelectedSize] = useState(null)
-    const [quantity, setQuantity] = useState(1)
-    const navigate = useNavigate()
+    const [loading, setLoading] = useState(true);
+    const [product, setProduct] = useState(null);
+    const [selectedSize, setSelectedSize] = useState(null);
+    const [quantity, setQuantity] = useState(1);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const foundProduct = productData.find(p => p.id === parseInt(productId))
-        setProduct(foundProduct)
+        setLoading(true);
+        setProduct(false);
 
-        if (foundProduct?.size?.length > 0) {
-            const defaultSize = foundProduct.size.find(s => s.quantity > 0)
-            setSelectedSize(defaultSize || null)
-        } else {
-            setSelectedSize(null)
+        const fetchProduct = async () => {
+            if (authTokens?.access_token) {
+                try {
+                    const prod = await ProductService.getOne(authTokens.access_token, productId);
+                    if (prod) {
+                        setProduct(prod);
+                        setLoading(false);
+
+                        const defaultSize = prod.sizes.find(s => s.quantity > 0);
+                        setSelectedSize(defaultSize || null);
+                    }
+                } catch (error) {
+                    console.error("Error getting product: ", error);
+                    throw error;
+                }
+            } else {
+                console.error("Cannot find product");
+            }
         }
-    }, [productId])
 
-    if (!product) {
+        fetchProduct();
+    }, [productId]);
+
+    if (!product & loading) {
         return (
             <div className="flex justify-center items-center h-screen text-xl text-gray-600">
-                Đang tải sản phẩm... hoặc không tìm thấy sản phẩm.
+                <LoadingSpinner></LoadingSpinner>
             </div>
         )
     }
@@ -50,8 +69,8 @@ export default function ProductDetails() {
         navigate('/cart')
     }
 
-    const mappedSizes = product.size
-        ? product.size.map(s => ({
+    const mappedSizes = product.sizes
+        ? product.sizes.map(s => ({
             name: s.name,
             inStock: s.quantity > 0,
             quantity: s.quantity
@@ -70,12 +89,12 @@ export default function ProductDetails() {
     ].filter(Boolean)
 
     return (
-        <div className="bg-white min-h-screen px-4 py-6 sm:px-8 sm:py-10">
+        <div className="bg-white min-h-screen px-4 py-6 sm:px-8 sm:py-10 my-20">
             <nav aria-label="Breadcrumb" className="border-b pb-4">
                 <ol className="flex items-center space-x-2 text-sm text-gray-600">
                     {breadcrumbs.map((b, i) => (
                         <li key={b.id || i} className="flex items-center">
-                            <a href={b.href} className="hover:text-gray-900">{b.name}</a>
+                            <a href={b.href} className="hover:text-gray-900">{b.name} &gt;</a>
                             {i < breadcrumbs.length - 1 && (
                                 <svg width={16} height={16} viewBox="0 0 16 16" className="mx-2 text-gray-400" fill="none">
                                     <path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="2" />
@@ -121,7 +140,7 @@ export default function ProductDetails() {
                             {product.discountPercent > 0 && (
                                 <div className="flex items-center mb-1 space-x-4">
                                     <span className="line-through text-gray-500">{product.price.toLocaleString()}đ</span>
-                                    <span className="text-green-600 font-medium">{product.discountPercent}% giảm</span>
+                                    <span className="text-green-600 font-medium">Giảm {product.discountPercent}%</span>
                                 </div>
                             )}
 
@@ -293,6 +312,8 @@ export default function ProductDetails() {
                 </Grid>
             </section>
 
+
+            {/* Recommends items using the sub-category */}
             {/* Sản phẩm tương tự */}
             <section className='pt-10'>
                 <h1 className='py-5 text-xl font-bold'>Sản phẩm tương tự</h1>

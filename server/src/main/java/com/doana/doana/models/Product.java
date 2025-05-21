@@ -1,5 +1,6 @@
 package com.doana.doana.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Arrays;
@@ -18,8 +19,12 @@ public class Product {
     private String name;
 
     @ManyToOne
-//    @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
+    @JoinColumn(name = "main_category_id", nullable = false)
+    private Category mainCategory;
+
+    @ManyToOne
+    @JoinColumn(name = "sub_category_id")
+    private Category subCategory;
 
     @Column(nullable = false)
     private Integer price;
@@ -32,21 +37,36 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Size> sizes;
 
-    // Constructors
     public Product() {
     }
 
-    public Product(String imageUrl, String name,  Category category, Integer price, Integer discountPercent, String description, List<Size> sizes) {
+    public Product(Long id, String imageUrl, String name, Category mainCategory, Category subCategory, Integer price, Integer discountPercent, String description, List<Size> sizes) {
+        this.id = id;
         this.imageUrl = imageUrl;
         this.name = name;
-        this.category = category;
+        this.mainCategory = mainCategory;
+        this.subCategory = subCategory;
         this.price = price;
         this.discountPercent = discountPercent;
         this.description = description;
         this.sizes = sizes;
     }
 
-    // Getters and Setters
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", name='" + name + '\'' +
+                ", mainCategory=" + mainCategory +
+                ", subCategory=" + subCategory +
+                ", price=" + price +
+                ", discountPercent=" + discountPercent +
+                ", description='" + description + '\'' +
+                ", sizes=" + sizes +
+                '}';
+    }
+
     public Long getId() {
         return id;
     }
@@ -71,12 +91,20 @@ public class Product {
         this.name = name;
     }
 
-    public Category getCategory() {
-        return category;
+    public Category getMainCategory() {
+        return mainCategory;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setMainCategory(Category mainCategory) {
+        this.mainCategory = mainCategory;
+    }
+
+    public Category getSubCategory() {
+        return subCategory;
+    }
+
+    public void setSubCategory(Category subCategory) {
+        this.subCategory = subCategory;
     }
 
     public Integer getPrice() {

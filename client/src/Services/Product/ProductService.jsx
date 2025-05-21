@@ -15,7 +15,6 @@ const ProductService = {
             }
 
             const data = await response.json();
-            console.log("Products: ", data);
             return data;
         } catch (error) {
             console.error(`Error getting products: ${error}`);
@@ -24,7 +23,26 @@ const ProductService = {
     },
 
     getAllByCat: async (token, category) => {
+        try {
+            const response = await fetch(`${base_url}/byCategory/${category}`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                }
+            });
 
+            if (!response.ok) {
+                {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+            }
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error(`Error getting user: ${error}`);
+            throw error;
+        }
     },
 
     getOne: async (token, id) => {

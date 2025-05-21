@@ -13,10 +13,12 @@ import test from '../../../Data/test.js';
 import filterData from '../product/FilterData.js';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { Link } from 'react-router-dom';
+import ProductService from '../../../Services/Product/ProductService.jsx';
+import LoadingSpinner from '../Loader/loadingSpin.jsx';
+import { useAuth } from '../Auth/AuthContext.jsx';
 
 
 const { filters } = filterData;
-
 
 const sortOptions = [
   { name: 'Price: Low to High', href: '#', current: false },
@@ -24,22 +26,21 @@ const sortOptions = [
 ];
 
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
-
+// function classNames(...classes) {
+//   return classes.filter(Boolean).join(' ');
+// }
 
 
 export default function Product() {
+  const { authTokens } = useAuth();
+  const [products, setProducts] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [selectednames, setSelectednames] = useState([]);
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedPriceRange, setSelectedPriceRange] = useState(null);
   const [selectedDiscountPercentRange, setSelectedDiscountPercentRange] = useState(null);
   const [filteredProducts, setFilteredProducts] = useState(test);
-
-
-
 
   // Hàm xử lý thay đổi name
   const handlenameChange = (event) => {
@@ -51,12 +52,10 @@ export default function Product() {
     }
   };
 
-
   // Hàm xử lý thay đổi Size
   const handleSizeChange = (event) => {
     setSelectedSize(event.target.value);
   };
-
 
   // Hàm xử lý thay đổi Price Range
   const handlePriceRangeChange = (event) => {
@@ -71,73 +70,91 @@ export default function Product() {
 
 
   useEffect(() => {
-    let newFilteredProducts = [...test];
-
-
-    // Filter by name
-    if (selectednames.length > 0) {
-      newFilteredProducts = newFilteredProducts.filter(product =>
-        selectednames.includes(product.name)
-      );
-    }
-
-
-    // Filter by Size
-    if (selectedSize) {
-      newFilteredProducts = newFilteredProducts.filter(product => {
-        // Ensure product.size exists and is an array
-        let sizeMatch = Array.isArray(product.size) && product.size.some(s => s.name === selectedSize && s.quantity > 0);
-        return sizeMatch;
-      });
-    }
-
-
-    // Filter by Price Range
-    if (selectedPriceRange) {
-      const [minPrice, maxPrice] = selectedPriceRange.split('-').map(Number);
-      if (maxPrice) {
-        newFilteredProducts = newFilteredProducts.filter(
-          product => product.price >= minPrice && product.price <= maxPrice
-        );
+    const getProducts = async () => {
+      if (authTokens?.access_token) {
+        try {
+          const prod = await ProductService.getAllProducts(authTokens.access_token);
+          if (prod != null) {
+            setProducts(prod);
+            setLoading(false);
+            console.log(prod);
+          }
+        } catch (error) {
+          console.error(`Error getting products: `, error);
+        }
       } else {
-        newFilteredProducts = newFilteredProducts.filter(
-          product => product.price >= minPrice
+        console.error("Can't get product");
+      }
+    };
+
+    getProducts();
+
+    if (products !== null && loading === false) {
+      let newFilteredProducts = [...test];
+
+      // Filter by category name
+      if (selectednames.length > 0) {
+        newFilteredProducts = newFilteredProducts.filter(product =>
+          selectednames.includes(product.name)
         );
       }
-    }
 
-    // Filter by Discount Percent Range
-    if (selectedDiscountPercentRange) {
-      let minPercent, maxPercent;
-
-      if (selectedDiscountPercentRange.includes('-')) {
-        [minPercent, maxPercent] = selectedDiscountPercentRange.split('-').map(Number);
-      } else if (selectedDiscountPercentRange.endsWith('+')) {
-        minPercent = Number(selectedDiscountPercentRange.replace('+', ''));
-        maxPercent = Infinity;
-      } else {
-        minPercent = Number(selectedDiscountPercentRange);
-        maxPercent = minPercent;
+      // Filter by Size
+      if (selectedSize) {
+        newFilteredProducts = newFilteredProducts.filter(product => {
+          // Ensure product.size exists and is an array
+          let sizeMatch = Array.isArray(product.size) && product.size.some(s => s.name === selectedSize && s.quantity > 0);
+          return sizeMatch;
+        });
       }
 
-      if (!isNaN(minPercent)) {
-        if (maxPercent !== undefined && maxPercent !== Infinity && !isNaN(maxPercent)) {
+      // Filter by Price Range
+      if (selectedPriceRange) {
+        const [minPrice, maxPrice] = selectedPriceRange.split('-').map(Number);
+        if (maxPrice) {
           newFilteredProducts = newFilteredProducts.filter(
-            product => product.discountPercent >= minPercent && product.discountPercent <= maxPercent
+            product => product.price >= minPrice && product.price <= maxPrice
           );
         } else {
           newFilteredProducts = newFilteredProducts.filter(
-            product => product.discountPercent >= minPercent
+            product => product.price >= minPrice
           );
         }
       }
+
+      // Filter by Discount Percent Range
+      if (selectedDiscountPercentRange) {
+        let minPercent, maxPercent;
+
+        if (selectedDiscountPercentRange.includes('-')) {
+          [minPercent, maxPercent] = selectedDiscountPercentRange.split('-').map(Number);
+        } else if (selectedDiscountPercentRange.endsWith('+')) {
+          minPercent = Number(selectedDiscountPercentRange.replace('+', ''));
+          maxPercent = Infinity;
+        } else {
+          minPercent = Number(selectedDiscountPercentRange);
+          maxPercent = minPercent;
+        }
+
+        if (!isNaN(minPercent)) {
+          if (maxPercent !== undefined && maxPercent !== Infinity && !isNaN(maxPercent)) {
+            newFilteredProducts = newFilteredProducts.filter(
+              product => product.discountPercent >= minPercent && product.discountPercent <= maxPercent
+            );
+          } else {
+            newFilteredProducts = newFilteredProducts.filter(
+              product => product.discountPercent >= minPercent
+            );
+          }
+        }
+      }
+      setFilteredProducts(newFilteredProducts);
+    } else {
+      console.error("Error getting products");
     }
 
 
-
-    setFilteredProducts(newFilteredProducts);
-
-  }, [selectednames, selectedSize, selectedPriceRange, selectedDiscountPercentRange]);
+  }, [selectednames, selectedSize, selectedPriceRange, selectedDiscountPercentRange, authTokens]);
 
 
 
@@ -284,10 +301,10 @@ export default function Product() {
         </Dialog>
 
 
-        <main className="mx-auto px-4 sm:px-6 lg:px-20 "  style={{ paddingTop: '24px' }}>
+        <main className="mx-auto px-4 sm:px-6 lg:px-20 " style={{ paddingTop: '24px' }}>
           <div className="flex items-baseline justify-between border-b border-gray-200 pt-24 pb-6">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900">Coffee </h1>
-
+            {/* Make dynamic for the other products by taking the path variable */}
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900">Cà phê </h1>
 
             <div className="flex items-center">
               <button type="button" className="-m-2 ml-4 p-2 text-gray-400 sm:ml-6 lg:hidden" onClick={() => setMobileFiltersOpen(true)}>
@@ -438,16 +455,20 @@ export default function Product() {
 
               {/* Product grid */}
               <div className="lg:col-span-4 w-full">
-                <div className="flex flex-wrap justify-center bg-white py-5">
-                  {filteredProducts.map((item, index) => (
-                    <Link
-                      key={item.id || index}
-                      to={`/product/${item.id}`}
-                    >
-                      <ProductCard product={item} />
-                    </Link>
-                  ))}
-                </div>
+                {(products != null && loading === false) ? (
+                  <div className="flex flex-wrap justify-center bg-white py-5">
+                    {filteredProducts.map((item, index) => (
+                      <Link
+                        key={item.id || index}
+                        to={`/product/${item.id}`}
+                      >
+                        <ProductCard product={item} />
+                      </Link>
+                    ))}
+                  </div>
+                ) : (
+                  <LoadingSpinner></LoadingSpinner>
+                )}
               </div>
             </div>
           </section>

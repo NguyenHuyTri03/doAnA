@@ -1,6 +1,8 @@
 package com.doana.doana.controllers;
 
+import com.doana.doana.models.Category;
 import com.doana.doana.models.Product;
+import com.doana.doana.services.CategoryService;
 import com.doana.doana.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,31 +20,40 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private CategoryService categoryService;
 
-    // Read a product by its ID
+    // Get product by ID
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        Optional<Product> product = productService.getProductById(id);
-        if (product.isPresent()) {
-            return new ResponseEntity<>(product.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return productService.getProductById(id)
+                .map(p -> new ResponseEntity<>(p, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    // Get all products
+    @GetMapping("/")
+    public ResponseEntity<List<Product>> getAllProducts() {
+        try {
+            return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    // Read all products
-    @GetMapping("/")
-    public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> products = productService.getAllProducts();
-        return new ResponseEntity<>(products, HttpStatus.OK);
+    // Get products by category name (main category)
+    @GetMapping("/byCategory/{name}")
+    public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable String name) {
+        Optional<Category> categoryOpt = categoryService.getCategoryByName(name);
+        return categoryOpt.map(category -> new ResponseEntity<>(productService.getProductsByCategory(category), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     // Create a new product
     @PostMapping("/")
     public ResponseEntity<Product> createProduct(@RequestBody Product product) {
         try {
-            Product createdProduct = productService.createProduct(product);
-            return new ResponseEntity<>(createdProduct, HttpStatus.OK);
+            Product saved = productService.createProduct(product);
+            return new ResponseEntity<>(saved, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
@@ -51,23 +62,20 @@ public class ProductController {
     // Update an existing product
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
-        try{
+        try {
             Product product = productService.updateProduct(id, updatedProduct);
-            if (product != null) {
-                return new ResponseEntity<>(product, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
+            return product != null
+                    ? new ResponseEntity<>(product, HttpStatus.OK)
+                    : new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-
     }
 
-    // Delete a product by its ID
+    // Delete a product
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

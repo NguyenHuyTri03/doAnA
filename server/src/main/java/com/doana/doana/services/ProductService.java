@@ -10,7 +10,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -19,27 +21,43 @@ public class ProductService {
     private ProductRepository productRepository;
 
     @Autowired
-    private SizeRepository SizeRepository;
+    private SizeRepository sizeRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private CategoryService categoryService;
+
     // Create a new product
     @Transactional
     public Product createProduct(Product product) {
-        //  Get category by name.
-        Category category = categoryRepository.findByName(product.getCategory().getName());
-        if (category == null) {
-            throw new IllegalArgumentException("Category not found: " + product.getCategory().getName());
-        }
-        product.setCategory(category);
+        // Get main category by name
+        Category mainCategory = categoryService.getCategoryByName(product.getMainCategory().getName())
+                .orElseThrow(() -> new IllegalArgumentException("Main category not found: " + product.getMainCategory().getName()));
 
-        // Ensure that the product object being saved has its sizes associated correctly
+        product.setMainCategory(mainCategory);
+
+        // Get sub-category if provided
+        if (product.getSubCategory() != null) {
+            Category subCategory = categoryService.getCategoryByName(product.getSubCategory().getName())
+                    .orElseThrow(() -> new IllegalArgumentException("Sub-category not found: " + product.getSubCategory().getName()));
+
+            // Validate that sub-category belongs to main category
+            if (subCategory.getParent() == null || !subCategory.getParent().getId().equals(mainCategory.getId())) {
+                throw new IllegalArgumentException("Sub-category is not a child of the main category.");
+            }
+
+            product.setSubCategory(subCategory);
+        }
+
+        // Associate sizes
         if (product.getSizes() != null) {
             for (Size size : product.getSizes()) {
-                size.setProduct(product); // Set the product for each size.
+                size.setProduct(product);
             }
         }
+
         return productRepository.save(product);
     }
 
@@ -53,41 +71,57 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    public List<Product> getProductsByCategory(Category category) {
+        return productRepository.findByMainCategoryId(category.getId());
+    }
+
     // Update an existing product
-    @Transactional //  Add this annotation.
+    @Transactional
     public Product updateProduct(Long id, Product updatedProduct) {
         Optional<Product> existingProductOptional = productRepository.findById(id);
-        if (existingProductOptional.isPresent()) {
-            Product existingProduct = existingProductOptional.get();
-            // Update the category.
-            Category category = categoryRepository.findByName(updatedProduct.getCategory().getName());
-            if (category == null) {
-                throw new IllegalArgumentException("Category not found: " + updatedProduct.getCategory().getName());
-            }
-            existingProduct.setCategory(category);
-
-            existingProduct.setImageUrl(updatedProduct.getImageUrl());
-            existingProduct.setName(updatedProduct.getName());
-            existingProduct.setPrice(updatedProduct.getPrice());
-            existingProduct.setDiscountPercent(updatedProduct.getDiscountPercent());
-            existingProduct.setDescription(updatedProduct.getDescription());
-
-            // Handle updating the sizes
-            if (updatedProduct.getSizes() != null) {
-                // Remove existing sizes
-                existingProduct.getSizes().clear();
-                // Add the new sizes, ensuring they are linked to the product
-                for (Size size : updatedProduct.getSizes()) {
-                    size.setProduct(existingProduct);
-                }
-                existingProduct.getSizes().addAll(updatedProduct.getSizes());
-            }
-
-            return productRepository.save(existingProduct);
-        } else {
-            // Handle the case where the product with the given ID doesn't exist
-            return null; // Or throw an exception
+        if (existingProductOptional.isEmpty()) {
+            throw new NoSuchElementException("Product not found with id: " + id);
         }
+
+        Product existingProduct = existingProductOptional.get();
+
+        // Update main category
+        Category mainCategory = categoryService.getCategoryByName(updatedProduct.getMainCategory().getName())
+                .orElseThrow(() -> new IllegalArgumentException("Main category not found: " + updatedProduct.getMainCategory().getName()));
+
+        existingProduct.setMainCategory(mainCategory);
+
+        // Update sub-category
+        if (updatedProduct.getSubCategory() != null) {
+            Category subCategory = categoryService.getCategoryByName(updatedProduct.getSubCategory().getName())
+                    .orElseThrow(() -> new IllegalArgumentException("Sub-category not found: " + updatedProduct.getSubCategory().getName()));
+
+            if (subCategory.getParent() == null || !subCategory.getParent().getId().equals(mainCategory.getId())) {
+                throw new IllegalArgumentException("Sub-category is not a child of the main category.");
+            }
+
+            existingProduct.setSubCategory(subCategory);
+        } else {
+            existingProduct.setSubCategory(null); // Remove if null
+        }
+
+        // Update fields
+        existingProduct.setImageUrl(updatedProduct.getImageUrl());
+        existingProduct.setName(updatedProduct.getName());
+        existingProduct.setPrice(updatedProduct.getPrice());
+        existingProduct.setDiscountPercent(updatedProduct.getDiscountPercent());
+        existingProduct.setDescription(updatedProduct.getDescription());
+
+        // Update sizes
+        if (updatedProduct.getSizes() != null) {
+            existingProduct.getSizes().clear();
+            for (Size size : updatedProduct.getSizes()) {
+                size.setProduct(existingProduct);
+            }
+            existingProduct.getSizes().addAll(updatedProduct.getSizes());
+        }
+
+        return productRepository.save(existingProduct);
     }
 
     // Delete a product by its ID
