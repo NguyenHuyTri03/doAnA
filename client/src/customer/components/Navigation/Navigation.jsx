@@ -20,12 +20,24 @@ import {
 import { navigation } from './navigation';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../Auth/AuthContext';
-import UserService from '../../../Services/User/UserService';
+import { useNavigate } from 'react-router-dom';
+
+function slugify(text) {
+    return text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') // remove accents
+        .replace(/\s+/g, '-') // replace spaces with hyphens
+        .replace(/[^\w\-]+/g, '') // remove special chars
+        .replace(/\-\-+/g, '-') // remove multiple hyphens
+        .replace(/^-+/, '') // trim start hyphens
+        .replace(/-+$/, ''); // trim end hyphens
+}
+
 
 export default function Navigation() {
     const [open, setOpen] = useState(false);
     const [expandedCategories, setExpandedCategories] = useState({});
     const { user, logout, loading, authTokens } = useAuth();
+    const navigate = useNavigate();
+
     console.log("Token", authTokens?.access_token);
 
     const toggleCategory = (categoryName) => {
@@ -81,16 +93,23 @@ export default function Navigation() {
                                                     <ul className="mt-2 space-y-1 pl-4">
                                                         {section.items.map((item) => (
                                                             <li key={item.name}>
-                                                                <a href={item.href || '#'} className="block text-gray-500 hover:text-orange-400 transition">
+                                                                <span
+                                                                    onClick={() => navigate(`/products/${slugify(item.name)}`)}
+                                                                    className="block text-gray-500 hover:text-orange-400 transition cursor-pointer"
+                                                                >
                                                                     {item.name}
-                                                                </a>
+                                                                </span>
+
                                                                 {item.children && (
                                                                     <ul className="ml-4 mt-1 space-y-1">
                                                                         {item.children.map((child) => (
                                                                             <li key={child.name}>
-                                                                                <a href={child.href || '#'} className="block text-gray-500 hover:text-orange-400 transition">
+                                                                                <span
+                                                                                    onClick={() => navigate(`/products/${slugify(child.name)}`)}
+                                                                                    className="block text-gray-500 hover:text-orange-400 transition cursor-pointer"
+                                                                                >
                                                                                     {child.name}
-                                                                                </a>
+                                                                                </span>
                                                                             </li>
                                                                         ))}
                                                                     </ul>

@@ -38,7 +38,6 @@ CREATE TABLE `cart_products` (
 
 LOCK TABLES `cart_products` WRITE;
 /*!40000 ALTER TABLE `cart_products` DISABLE KEYS */;
-INSERT INTO `cart_products` VALUES (1,1);
 /*!40000 ALTER TABLE `cart_products` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-09  1:16:26
+-- Dump completed on 2025-05-26  3:06:01

@@ -9,19 +9,19 @@ const navigation = {
           name: 'Các loại sản phẩm',
           items: [
             {
-              name: 'Cà phê', href: '/products',
+              name: 'Cà phê', href: '/products/ca-phe',
               children: [
-                { name: 'Cà phê rang' },
-                { name: 'Cà phê xay' },
-                { name: 'Cà phê hòa tan' },
+                { name: 'Cà phê hạt', href: '/products/ca-phe-hat' },
+                { name: 'Cà phê rang', href: '/products/ca-phe-rang' },
+                { name: 'Cà phê hòa tan', href: '/products/ca-phe-hoa-tan' },
               ],
             },
-            { name: 'Trà' },
+            { name: 'Trà', href: '/products/tra' },
             {
-              name: 'Máy pha',
+              name: 'Máy pha', href: '/products/may',
               children: [
-                { name: 'Máy xay' },
-                { name: 'Máy pha' },
+                { name: 'Máy xay', href: '/products/may-xay' },
+                { name: 'Máy pha', href: '/products/may-pha' },
               ],
             },
           ],

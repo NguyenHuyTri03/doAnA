@@ -45,7 +45,9 @@ public class ProductController {
     @GetMapping("/byCategory/{name}")
     public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable String name) {
         Optional<Category> categoryOpt = categoryService.getCategoryByName(name);
-        return categoryOpt.map(category -> new ResponseEntity<>(productService.getProductsByCategory(category), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return categoryOpt
+                .map(category -> new ResponseEntity<>(productService.getProductsByCategory(category), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     // Create a new product

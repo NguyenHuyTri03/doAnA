@@ -1,14 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import CartItem from './CartItem'
 import { Button } from '@mui/material'
+import { useAuth } from '../Auth/AuthContext.jsx'
 
 const Cart = () => {
+  const { authTokens, user } = useAuth();
+  const [cart, setCart] = useState([]);
+
+  // Get cart details, create a new cart of the user if there was no cart
+
   return (
     <div>
       {/* danh sách sản phẩm */}
       <div className='lg:grid grid-cols-3 lg:px-16 relative pt-28'>
         <div className='col-span-2'>
-          {[1, 1, 1, 1].map((item) => <CartItem />)}
+          {/* Cart item */}
+          {[1, 1].map((item) => <CartItem />)}
         </div>
         <div className='px-5 sticky top-0 h-[100vh] mt-5 lg:mt-0'>
           <div className='border '>

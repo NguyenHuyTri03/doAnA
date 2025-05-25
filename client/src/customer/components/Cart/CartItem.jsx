@@ -3,9 +3,12 @@ import { IconButton, Button } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
 import DeleteIcon from '@mui/icons-material/Delete'
+import { useAuth } from '../Auth/AuthContext'
 
 const CartItem = () => {
-  const [quantity, setQuantity] = useState(1)
+  const { authTokens, user } = useAuth();
+  const [quantity, setQuantity] = useState(1);
+
 
   const handleIncrease = () => setQuantity((prev) => prev + 1)
   const handleDecrease = () => {
@@ -29,7 +32,7 @@ const CartItem = () => {
             />
           </div>
 
-          
+
         </div>
 
         {/* Product Info */}
@@ -43,7 +46,7 @@ const CartItem = () => {
             <p className='text-green-600 font-semibold'>12% off</p>
           </div>
 
-   
+
           <div className='flex items-center space-x-2 pt-4'>
             <IconButton size="small" color="primary" onClick={handleDecrease}>
               <RemoveIcon />
@@ -53,15 +56,15 @@ const CartItem = () => {
               <AddIcon />
             </IconButton>
             <Button
-            variant="outlined"
-            color="error"
-            size="small"
-            startIcon={<DeleteIcon />}
-            onClick={handleRemove}
-            className='mt-3'
-          >
-            Remove
-          </Button>
+              variant="outlined"
+              color="error"
+              size="small"
+              startIcon={<DeleteIcon />}
+              onClick={handleRemove}
+              className='mt-3'
+            >
+              Remove
+            </Button>
           </div>
         </div>
       </div>

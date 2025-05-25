@@ -16,12 +16,14 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
+    // Create a new cart
     @PostMapping("/users/{userId}")
     public ResponseEntity<Cart> createCart(@PathVariable Long userId) {
         Cart cart = cartService.createCart(userId);
         return new ResponseEntity<>(cart, HttpStatus.CREATED);
     }
 
+    // Get cart by user ID
     @GetMapping("/{id}")
     public ResponseEntity<Cart> getCartById(@PathVariable Long id) {
         Optional<Cart> cart = cartService.getCartById(id);
@@ -29,25 +31,27 @@ public class CartController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping
-    public ResponseEntity<List<Cart>> getAllCarts() {
-        List<Cart> carts = cartService.getAllCarts();
-        return new ResponseEntity<>(carts, HttpStatus.OK);
-    }
-
+    // Add a product to the cart of a user
     @PostMapping("/{cartId}/products/{productId}")
     public ResponseEntity<Cart> addProductToCart(
             @PathVariable Long cartId,
             @PathVariable Long productId,
             @RequestParam Integer quantity) {
         try {
-            Cart cart = cartService.addProductToCart(cartId, productId, quantity);
-            return new ResponseEntity<>(cart, HttpStatus.OK);
+            Optional<Cart> cart = cartService.getCartById(cartId);
+            if(cart.isPresent()) {
+                cartService.addProductToCart(cartId, productId, quantity);
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
+    // Remove a product from the cart
     @DeleteMapping("/{cartId}/products/{productId}")
     public ResponseEntity<Cart> removeProductFromCart(
             @PathVariable Long cartId,

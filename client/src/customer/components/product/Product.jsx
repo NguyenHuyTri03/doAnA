@@ -9,13 +9,13 @@ import {
   ChevronDownIcon, MinusIcon, PlusIcon,
 } from '@heroicons/react/20/solid';
 import ProductCard from './ProductCard';
-import test from '../../../Data/test.js';
 import filterData from '../product/FilterData.js';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { Link } from 'react-router-dom';
 import ProductService from '../../../Services/Product/ProductService.jsx';
 import LoadingSpinner from '../Loader/loadingSpin.jsx';
 import { useAuth } from '../Auth/AuthContext.jsx';
+import { useParams } from 'react-router-dom';
 
 
 const { filters } = filterData;
@@ -25,22 +25,17 @@ const sortOptions = [
   { name: 'Price: High to Low', href: '#', current: false },
 ];
 
-
-// function classNames(...classes) {
-//   return classes.filter(Boolean).join(' ');
-// }
-
-
 export default function Product() {
   const { authTokens } = useAuth();
-  const [products, setProducts] = useState(null);
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [selectednames, setSelectednames] = useState([]);
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedPriceRange, setSelectedPriceRange] = useState(null);
   const [selectedDiscountPercentRange, setSelectedDiscountPercentRange] = useState(null);
-  const [filteredProducts, setFilteredProducts] = useState(test);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const { category } = useParams();
 
   // Hàm xử lý thay đổi name
   const handlenameChange = (event) => {
@@ -67,48 +62,47 @@ export default function Product() {
     setSelectedDiscountPercentRange(event.target.value);
   };
 
-
-
+  // fetch products
   useEffect(() => {
     const getProducts = async () => {
       if (authTokens?.access_token) {
         try {
-          const prod = await ProductService.getAllProducts(authTokens.access_token);
+          const prod = await ProductService.getAllByCat(authTokens.access_token, category);
           if (prod != null) {
             setProducts(prod);
-            setLoading(false);
-            console.log(prod);
           }
         } catch (error) {
           console.error(`Error getting products: `, error);
+        } finally {
+          setLoading(false);
         }
       } else {
         console.error("Can't get product");
+        setLoading(false);
       }
     };
 
     getProducts();
+  }, [authTokens, category]);
 
-    if (products !== null && loading === false) {
-      let newFilteredProducts = [...test];
+  // Filtering
+  useEffect(() => {
+    if (!loading && products.length > 0) {
+      let newFilteredProducts = [...products];
 
-      // Filter by category name
       if (selectednames.length > 0) {
         newFilteredProducts = newFilteredProducts.filter(product =>
           selectednames.includes(product.name)
         );
       }
 
-      // Filter by Size
       if (selectedSize) {
-        newFilteredProducts = newFilteredProducts.filter(product => {
-          // Ensure product.size exists and is an array
-          let sizeMatch = Array.isArray(product.size) && product.size.some(s => s.name === selectedSize && s.quantity > 0);
-          return sizeMatch;
-        });
+        newFilteredProducts = newFilteredProducts.filter(product =>
+          Array.isArray(product.size) &&
+          product.size.some(s => s.name === selectedSize && s.quantity > 0)
+        );
       }
 
-      // Filter by Price Range
       if (selectedPriceRange) {
         const [minPrice, maxPrice] = selectedPriceRange.split('-').map(Number);
         if (maxPrice) {
@@ -122,7 +116,6 @@ export default function Product() {
         }
       }
 
-      // Filter by Discount Percent Range
       if (selectedDiscountPercentRange) {
         let minPercent, maxPercent;
 
@@ -148,15 +141,10 @@ export default function Product() {
           }
         }
       }
+
       setFilteredProducts(newFilteredProducts);
-    } else {
-      console.error("Error getting products");
     }
-
-
-  }, [selectednames, selectedSize, selectedPriceRange, selectedDiscountPercentRange, authTokens]);
-
-
+  }, [products, loading, selectednames, selectedSize, selectedPriceRange, selectedDiscountPercentRange]);
 
 
   return (
@@ -303,8 +291,7 @@ export default function Product() {
 
         <main className="mx-auto px-4 sm:px-6 lg:px-20 " style={{ paddingTop: '24px' }}>
           <div className="flex items-baseline justify-between border-b border-gray-200 pt-24 pb-6">
-            {/* Make dynamic for the other products by taking the path variable */}
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900">Cà phê </h1>
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900">Product</h1>
 
             <div className="flex items-center">
               <button type="button" className="-m-2 ml-4 p-2 text-gray-400 sm:ml-6 lg:hidden" onClick={() => setMobileFiltersOpen(true)}>
@@ -455,7 +442,7 @@ export default function Product() {
 
               {/* Product grid */}
               <div className="lg:col-span-4 w-full">
-                {(products != null && loading === false) ? (
+                {(products != null && loading == false) ? (
                   <div className="flex flex-wrap justify-center bg-white py-5">
                     {filteredProducts.map((item, index) => (
                       <Link

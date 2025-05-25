@@ -20,7 +20,7 @@ function classNames(...classes) {
 const reviews = { href: '', average: 4, totalCount: 117 }
 
 export default function ProductDetails() {
-    const { authTokens } = useAuth();
+    const { authTokens, user } = useAuth();
     const { productId } = useParams()
     const [loading, setLoading] = useState(true);
     const [product, setProduct] = useState(null);
@@ -29,6 +29,7 @@ export default function ProductDetails() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         setLoading(true);
         setProduct(false);
 
@@ -64,6 +65,9 @@ export default function ProductDetails() {
     }
 
     const handleAddToCart = () => {
+        // Add item to cart, create a cart if there was none for the user
+
+
         if (!selectedSize) return
         console.log('Thêm vào giỏ hàng:', { product, selectedSize, quantity })
         navigate('/cart')

@@ -9,8 +9,9 @@ const filters = [
     id: 'name',
     name: 'Loại sản phẩm',
     options: [
-      { value: 'ca-phe-rang', label: 'Cà phê hòa tan', checked: false },
+      { value: 'ca-phe-hoa-tan', label: 'Cà phê hòa tan', checked: false },
       { value: 'ca-phe-hat', label: 'Cà phê hạt', checked: false },
+      { value: 'ca-phe-rang', label: 'Cà phê rang', checked: false },
       { value: 'tra-xanh', label: 'Trà xanh', checked: false },
     ],
   },

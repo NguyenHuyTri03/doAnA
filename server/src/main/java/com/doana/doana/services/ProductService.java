@@ -72,7 +72,8 @@ public class ProductService {
     }
 
     public List<Product> getProductsByCategory(Category category) {
-        return productRepository.findByMainCategoryId(category.getId());
+        Long categoryId = category.getId();
+        return productRepository.findByMainCategoryIdOrSubCategoryId(categoryId, categoryId);
     }
 
     // Update an existing product
